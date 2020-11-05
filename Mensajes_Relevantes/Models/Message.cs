@@ -9,13 +9,13 @@ namespace Mensajes_Relevantes.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string EmisorMsg { get; set; }
-        public string ReceptorMsg { get; set; }
-        public string Mensaje { get; set; }
+        public string issuingMsg { get; set; }
+        public string recipientMsg { get; set; }
+        public string msg { get; set; }
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime FechaEnvio { get; set; }
-        public bool PoseeArchivo { get; set; }
-        public string NombreArchivo { get; set; }
-        public byte[] Archivo { get; set; }
+        public DateTime sendDate { get; set; }
+        public bool contentFile { get; set; }
+        public string fileName { get; set; }
+        public byte[] chatFile { get; set; }
     }
 }
