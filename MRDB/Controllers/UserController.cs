@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Mensajes_Relevantes.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MRDB.Models;
 
 namespace MRDB.Controllers
 {
@@ -24,17 +26,34 @@ namespace MRDB.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-            return View();
+
+             return View();
+           
+            
         }
 
         // POST: UserController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Models.MongoHelper.ConnectToMongoService();
+                Models.MongoHelper.User_Collection = Models.MongoHelper.Database.GetCollection<UserProperty>("User");
+
+                Operation operation = new Operation();
+                Object id = operation.GenerateRandomId(24);
+                Models.MongoHelper.User_Collection.InsertOneAsync(new UserProperty
+                {
+                    Id = id,
+                    Name = collection["Name"],
+                    User = collection["User"],
+                    Password = collection["Password"]
+                });
+
+
+
+                return Ok();
             }
             catch
             {
