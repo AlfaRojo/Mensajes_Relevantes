@@ -11,9 +11,8 @@ namespace MRDB.Models
     {
         public static IMongoClient Client { get; set; }
         public static IMongoDatabase Database { get; set; }
-        
-        public static string MongoConnection = "mongodb://localhost:27017";
 
+        public static string MongoConnection = "mongodb+srv://EbGue:7vkLmhPq9X3@newclouster.rbdey.mongodb.net/test?authSource=admin&replicaSet=atlas-rbpzt0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true";
         public static string MongoDataBase = "MRDB";
 
 

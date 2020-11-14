@@ -26,10 +26,8 @@ namespace MRDB.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-
              return View();
-           
-            
+  
         }
 
         // POST: UserController/Create
@@ -53,7 +51,7 @@ namespace MRDB.Controllers
 
 
 
-                return Ok();
+                return View();
             }
             catch
             {
