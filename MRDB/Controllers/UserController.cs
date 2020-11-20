@@ -36,21 +36,18 @@ namespace MRDB.Controllers
         {
             try
             {
-                Models.MongoHelper.ConnectToMongoService();
-                Models.MongoHelper.User_Collection = Models.MongoHelper.Database.GetCollection<UserProperty>("User");
+                MongoHelper.ConnectToMongoService();
+                MongoHelper.User_Collection = MongoHelper.Database.GetCollection<UserProperty>("User");
 
                 Operation operation = new Operation();
-                Object id = operation.GenerateRandomId(24);
-                Models.MongoHelper.User_Collection.InsertOneAsync(new UserProperty
+                var id = operation.GenerateRandomId(24);
+                MongoHelper.User_Collection.InsertOneAsync(new UserProperty
                 {
                     Id = id,
                     Name = collection["Name"],
                     User = collection["User"],
                     Password = collection["Password"]
                 });
-
-
-
                 return View();
             }
             catch
