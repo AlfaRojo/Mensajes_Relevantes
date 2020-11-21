@@ -17,8 +17,13 @@ namespace MRDB.Controllers
             return View();
         }
 
-        // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Details(Message message)
         {
             return View();
         }
