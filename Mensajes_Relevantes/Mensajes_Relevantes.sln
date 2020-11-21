@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mensajes_Relevantes", "Mensajes_Relevantes.csproj", "{FAA666E9-4494-4FB2-B5A8-19076D221003}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRDB", "..\MRDB\MRDB.csproj", "{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRDB", "..\MRDB\MRDB.csproj", "{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laboratorio_3_EDII", "..\..\Laboratorio3_EDII\Laboratorio_3_EDII\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj", "{A671A76F-37B7-4952-B5D8-CCBC1C669355}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A671A76F-37B7-4952-B5D8-CCBC1C669355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A671A76F-37B7-4952-B5D8-CCBC1C669355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A671A76F-37B7-4952-B5D8-CCBC1C669355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A671A76F-37B7-4952-B5D8-CCBC1C669355}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
