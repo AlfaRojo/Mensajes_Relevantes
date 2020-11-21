@@ -12,7 +12,7 @@ namespace MRDB.Controllers
     public class UserController : Controller
     {
         // GET: UserController
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
