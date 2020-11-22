@@ -1,0 +1,53 @@
+[
+  {
+    "idChat": 1,
+    "Send": [
+      {
+        "idMessage": "asd1",
+        "Text": "Hello friend"
+      },
+      {
+        "idMessage": "asd2",
+        "Text": "How are you?"
+      },
+      {
+        "idMessage": "asd3",
+        "Text": "How are you family?"
+      }
+    ],
+    "Recive": [
+      {
+        "idMessage": "asc1",
+        "Text": "Hello, Jose"
+      },
+      {
+        "idMessage": "asc2",
+        "Text": "Find and you?"
+      }
+    ]
+  },
+  {
+    "idChat": 2,
+    "Send": [
+      {
+        "idMessage": "asd4",
+        "Text": "Hello, Jose"
+      },
+      {
+        "idMessage": "asd5",
+        "Text": "Find and you?"
+      }
+    ],
+    "Recive": [
+      {
+        "idMessage": "asc3",
+        "Text": "How are you?"
+      },
+      {
+        "idMessage": "asc4",
+        "Text": "How are you family?"
+      }
+    ]
+  }
+
+]

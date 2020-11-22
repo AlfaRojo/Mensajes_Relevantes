@@ -8,14 +8,21 @@ namespace Mensajes_Relevantes.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public string issuingMsg { get; set; }
-        public string recipientMsg { get; set; }
-        public string msg { get; set; }
+        [BsonElement("idMessage")]
+        public string Id_Message { get; set; }
+        
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime sendDate { get; set; }
-        public bool contentFile { get; set; }
-        public string fileName { get; set; }
-        public byte[] chatFile { get; set; }
-    }
+        [BsonElement("sendDate")]
+        public DateTime SendDate { get; set; }
+
+        [BsonElement("text")]
+        public string Text { get; set; }
+
+        [BsonElement("fileName")]
+        public string FileName { get; set; }
+
+        [BsonElement("contentFile")]
+        public bool ContentFile { get; set; }
+
+      }
 }

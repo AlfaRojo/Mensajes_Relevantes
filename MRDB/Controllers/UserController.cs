@@ -14,7 +14,7 @@ namespace MRDB.Controllers
             return View();
         }
 
-        public ActionResult Details()
+        public ActionResult Message()
         {
             return View();
         }
@@ -39,15 +39,15 @@ namespace MRDB.Controllers
             try
             {
                 MongoHelper.ConnectToMongoService();
-                MongoHelper.User_Collection = MongoHelper.Database.GetCollection<UserProperty>("User");
+                MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
 
                 Operation operation = new Operation();
                 var id = operation.GenerateRandomId(24);
-                MongoHelper.User_Collection.InsertOneAsync(new UserProperty
+                MongoHelper.User_Collection.InsertOneAsync(new User
                 {
-                    Id = id,
+                    
                     Name = collection["Name"],
-                    User = collection["User"],
+                    Nick_Name = collection["Nick_Name"],
                     Password = collection["Password"]
                 });
                 return View();

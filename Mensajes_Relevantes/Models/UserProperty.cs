@@ -7,7 +7,7 @@ namespace Mensajes_Relevantes.Models
     public class UserProperty
     {
         
-        public Object Id { get; set; }
+        [BsonId]
         public string Name { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
