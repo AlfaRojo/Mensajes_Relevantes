@@ -1,4 +1,4 @@
-﻿@model Mensajes_Relevantes.Models.UserProperty;
+﻿@model Mensajes_Relevantes.Models.User;
 @{
     ViewData["Title"] = "Iniciar sesión";
 }
@@ -11,9 +11,9 @@
         <form asp-action="Login" class="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="User" class="text-danger"></span>
+                <label asp-for="Nick_Name" class="control-label">Nick Name</label>
+                <input asp-for="Nick_Name" class="form-control" />
+                <span asp-validation-for="Nick_Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>

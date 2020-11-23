@@ -38,24 +38,31 @@ namespace MRDB.Controllers
         {
             try
             {
-                MongoHelper.ConnectToMongoService();
-                MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
-
-                Operation operation = new Operation();
-                var id = operation.GenerateRandomId(24);
-                MongoHelper.User_Collection.InsertOneAsync(new User
-                {
-                    
-                    Name = collection["Name"],
-                    Nick_Name = collection["Nick_Name"],
-                    Password = collection["Password"]
-                });
+                var Operation = new Operation();
+                Operation.CreateUser(collection["name"], collection["Nick_Name"],collection["password"]);
                 return View();
             }
             catch
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult Login(IFormCollection collection)
+        {
+            try
+            {
+                var Operation = new Operation();
+                var result = Operation.SearchUser(collection["Nick_Name"], collection["password"]);
+                if (result == true) { return RedirectToAction("Message", "User"); }
+                else { return View(); }
+            }
+            catch
+            {
+                return View();
+            }
+
         }
 
         // GET: UserController/Edit/5

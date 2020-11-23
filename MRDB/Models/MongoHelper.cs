@@ -13,7 +13,11 @@ namespace MRDB.Models
         public static string MongoDataBase = "MRDB";
 
 
+        public static IMongoCollection<UserProperty> UserP_Collection { get; set; }
         public static IMongoCollection<User> User_Collection { get; set; }
+        public static IMongoCollection<Chat> Chat_Collection { get; set; }
+        public static IMongoCollection<History> History_Collection { get; set; }
+        public static IMongoCollection<Message> Message_Collection { get; set; }
         internal static void ConnectToMongoService()
         {
             try

@@ -11,9 +11,8 @@ namespace Mensajes_Relevantes.Models
     public class User
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("nickName")]
-        public string Nick_Name { get; set; }
+        public Object Nick_Name { get; set; }
 
         [BsonElement("name")]
         public string Name { get; set; }
