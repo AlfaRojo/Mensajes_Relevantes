@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -19,6 +17,9 @@ namespace Mensajes_Relevantes.Models
 
         [BsonElement("password")]
         public string Password { get; set; }
+
+        [BsonElement("HD")]
+        public int DH { get; set; }
 
         public List<Contact> Friends;
 

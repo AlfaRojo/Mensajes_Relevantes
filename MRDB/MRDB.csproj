@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DiffieHelman\DiffieHelman.csproj" />
+    <ProjectReference Include="..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj" />
     <ProjectReference Include="..\Mensajes_Relevantes\Mensajes_Relevantes.csproj" />
   </ItemGroup>
 

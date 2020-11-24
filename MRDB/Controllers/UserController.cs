@@ -3,6 +3,7 @@ using Mensajes_Relevantes.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
+using DiffieHelman;
 
 namespace MRDB.Controllers
 {
@@ -22,6 +23,8 @@ namespace MRDB.Controllers
         [HttpPost]
         public ActionResult Details(Message message)
         {
+            var keys = DiffieH.DiffieHelmannAlgorithm();
+            
             return View();
         }
 

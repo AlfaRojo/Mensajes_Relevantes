@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Mensajes_Relevantes.Models;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -21,17 +18,18 @@ namespace MRDB.Models
 
         public void CreateUser(string name,  string nickName, string password)
         {
-            Models.MongoHelper.ConnectToMongoService();
-            Models.MongoHelper.User_Collection = Models.MongoHelper.Database.GetCollection<User>("User");
+            Random rnd = new Random();
+            MongoHelper.ConnectToMongoService();
+            MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
             var Operation = new Operation();
             Object id = Operation.GenerateObjectId(nickName);
-            Models.MongoHelper.User_Collection.InsertOneAsync(new User
+            MongoHelper.User_Collection.InsertOneAsync(new User
             {
                 Name = name,
                 Nick_Name = id,
-                Password = password
+                Password = password,
+                DH = rnd.Next(15,200)
             });
-
         }
 
         public bool SearchUser(string nickName, string password)
@@ -48,7 +46,6 @@ namespace MRDB.Models
 
             var Result = (searchUser.Any<User>()) ? true : false;
             return Result;
-           
         }
     }
 }
