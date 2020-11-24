@@ -9,22 +9,19 @@ namespace MRDB.Controllers
 {
     public class UserController : Controller
     {
-        // GET: UserController
-        public ActionResult Login()
-        {
-            return View();
-        }
 
         public ActionResult Message()
         {
+            var Operation = new Operation();
+            var code = Operation.Find_DH("Cookie");
             return View();
         }
-
         [HttpPost]
-        public ActionResult Details(Message message)
+        public ActionResult Message(Message message)
         {
+            var Operation = new Operation();
+            var code = Operation.Find_DH("Cookie");
             //var keys = DiffieH.DiffieHelmannAlgorithm();
-            
             return View();
         }
 
@@ -51,6 +48,11 @@ namespace MRDB.Controllers
             }
         }
 
+        // GET: UserController
+        public ActionResult Login()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult Login(IFormCollection collection)
         {

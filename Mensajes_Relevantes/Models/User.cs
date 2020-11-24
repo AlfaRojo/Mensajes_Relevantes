@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Mensajes_Relevantes.Models
 {
+    [Serializable]
     public class User
     {
         [BsonId]
@@ -26,6 +27,15 @@ namespace Mensajes_Relevantes.Models
         public User()
         {
             Friends = new List<Contact>();
+        }
+
+        public User(object nickname, string name, string password, int DH, List<Contact> friends)
+        {
+            this.Nick_Name = nickname;
+            this.Name = name;
+            this.Password = password;
+            this.DH = DH;
+            this.Friends = friends;
         }
     }
 }
