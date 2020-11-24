@@ -22,6 +22,36 @@ label{
     color: white;
 }
 
+input.Write {
+    background: #113333;
+    color: white;
+    width: 400px;
+    height: 152px;
+    padding: 50px;
+    position: absolute;
+    top: -7%;
+    left: 0%;
+    transform: translateY(9%);
+}
+
+input.SendButton {
+    background: #287233;
+    color:white;
+    width: 95px;
+    height: 74px;
+    left: 129%;
+    transform: translate(200px,-63px);
+}
+
+input.SearchFileButton {
+    background: #002a50;
+    color:white;
+    width: 95px;
+    height: 74px;
+    left: 129%;
+    transform: translate(200px,-77px)
+}
+
 form.Login {
     border: 2px groove white;
     border-radius: 5px;
@@ -29,9 +59,10 @@ form.Login {
     width: 300px;
     position: absolute;
     top: 110%;
-    left: 110%;   
-    transform : translateY(25%);
+    left: 110%;
+    transform: translateY(25%);
 }
+
 
 form.Create {
     border: 2px groove white;
@@ -42,6 +73,35 @@ form.Create {
     top: 110%;
     left: 110%;
     transform: translateY(25%);
+}
+
+form.Menu {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 500px;
+    height: 160px;
+    position: absolute;
+    left: 80%;
+    transform: translateY(248%);
+}
+
+form.Menu2 {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 500px;
+    height: 321px;
+    position: absolute;
+    top: 110%;
+    left: 80%;
+    transform: translateY(25%);
+}
+
+textarea.ViewInformation {
+    background-color: steelblue;
+    width: 496px;
+    transform: translate(-50px, -49px);
 }
 
 

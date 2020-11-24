@@ -1,0 +1,33 @@
+﻿@model Mensajes_Relevantes.Models.Connection;
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<h1>Menu</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Menu" class="Menu">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input placeholder="Escribir" asp-for="Text" class="Write" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="SendButton" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search File" class="SearchFileButton" />
+            </div>
+        </form>
+        <form asp-action="Menu" class="Menu2">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+
+

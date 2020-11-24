@@ -28,6 +28,11 @@ namespace MRDB.Controllers
             return View();
         }
 
+        public ActionResult Menu()
+        {
+            return View();
+        }
+
         // GET: UserController/Create
         public ActionResult Create()
         {
