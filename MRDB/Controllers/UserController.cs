@@ -23,7 +23,7 @@ namespace MRDB.Controllers
         [HttpPost]
         public ActionResult Details(Message message)
         {
-            var keys = DiffieH.DiffieHelmannAlgorithm();
+            //var keys = DiffieH.DiffieHelmannAlgorithm();
             
             return View();
         }

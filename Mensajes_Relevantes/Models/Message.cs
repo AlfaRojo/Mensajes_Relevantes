@@ -7,9 +7,8 @@ namespace Mensajes_Relevantes.Models
     public class Message
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("idMessage")]
-        public string Id_Message { get; set; }
+        public object Id_Message { get; set; }
         
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("sendDate")]
