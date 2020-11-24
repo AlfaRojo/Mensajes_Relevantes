@@ -34,7 +34,7 @@ namespace MRDB.Models
 
         public bool SearchUser(string nickName, string password)
         {
-            Models.MongoHelper.ConnectToMongoService();
+            MongoHelper.ConnectToMongoService();
             var UserCollection = MongoHelper.Database.GetCollection<User>("User");
             var Users = UserCollection.AsQueryable<User>();
 
