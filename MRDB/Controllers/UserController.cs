@@ -12,16 +12,11 @@ namespace MRDB.Controllers
 
         public ActionResult Message()
         {
-            var Operation = new Operation();
-            var code = Operation.Find_DH("Cookie");
             return View();
         }
         [HttpPost]
         public ActionResult Message(Message message)
         {
-            var Operation = new Operation();
-            var code = Operation.Find_DH("Cookie");
-            //var keys = DiffieH.DiffieHelmannAlgorithm();
             return View();
         }
 

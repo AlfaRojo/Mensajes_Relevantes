@@ -46,7 +46,7 @@ namespace MRDB.Models
                              select user;
 
 
-
+            Data.Instance.user = searchUser.ToListAsync<User>().Result[0];
             var Result = (searchUser.Any<User>()) ? true : false;
             return Result;
         }
