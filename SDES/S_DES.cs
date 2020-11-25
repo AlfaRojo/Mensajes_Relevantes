@@ -14,7 +14,7 @@ namespace SDES
             Master_key = new BitArray(10);
             for (int i = 0; i < _key.Length; i++)
             {
-                Master_key[i] = str2bin(_key[i]);
+                Master_key[i] = string_to_bin(_key[i]);
             }
 
             BitArray b0 = new BitArray(2);
@@ -77,58 +77,49 @@ namespace SDES
 
         public byte Encrypt(byte block)
         {
-            BitArray bits_block = byte2bits(block);
+            BitArray bits_block = byte_to_Bits(block);
             BitArray[] keys = Generate_Keys();
-            return bits2byte(RIP(Fk(Switch(Fk(IP(bits_block), keys[0])), keys[1])));
-            //ciphertext = IP-1( fK2 ( SW (fK1 (IP (plaintext)))))
+            return bits_to_Byte(IP_Inverse(Fk(Swap(Fk(IP(bits_block), keys[0])), keys[1])));
         }
 
         public byte Decrypt(byte block)
         {
-            BitArray bits_block = byte2bits(block);
+            BitArray bits_block = byte_to_Bits(block);
             BitArray[] keys = Generate_Keys();
-            var initial = IP(bits_block);
-            var proccess = Fk(IP(bits_block), keys[1]);
-            var swap = Switch(Fk(IP(bits_block), keys[1]));
-            var procces2 = Fk(Switch(Fk(IP(bits_block), keys[1])), keys[0]);
-            var dont = RIP(Fk(Switch(Fk(IP(bits_block), keys[1])), keys[0]));
-            var total = bits2byte(RIP(Fk(Switch(Fk(IP(bits_block), keys[1])), keys[0])));
-            return bits2byte(RIP(Fk(Switch(Fk(IP(bits_block), keys[1])), keys[0])));
-            //IP-1 ( fK1( SW( fK2( IP(ciphertext)))))
+            return bits_to_Byte(IP_Inverse(Fk(Swap(Fk(IP(bits_block), keys[1])), keys[0])));
         }
 
-        BitArray byte2bits(byte block)
+        private BitArray byte_to_Bits(byte block)
         {
-            string bits = decimal2binstr(block);
+            string bits = dec_to_Bin(block);
             BitArray result = new BitArray(8);
             for (int i = 0; i < bits.Length; i++)
             {
-                result[i] = str2bin(bits[i]);
+                result[i] = string_to_bin(bits[i]);
             }
             return result;
         }
 
-        byte bits2byte(BitArray block)
+        private byte bits_to_Byte(BitArray block)
         {
             string result = "";
             for (int i = 0; i < block.Length; i++)
             {
-                result += bin2str(block[i]);
+                result += get_String(block[i]);
             }
-            return binstr2decimal(result);
+            return bin_to_Dec(result);
         }
 
-        BitArray[] Generate_Keys()
+        private BitArray[] Generate_Keys()
         {
             BitArray[] keys = new BitArray[2];
             BitArray[] temp = Split_Block(P10(Master_key));
-            keys[0] = P8(Circular_left_shift(temp[0], 1), Circular_left_shift(temp[1], 1));
-            keys[1] = P8(Circular_left_shift(temp[0], 3), Circular_left_shift(temp[1], 3)); //1 + 2 = 3
+            keys[0] = P8(left_shift(temp[0], 1), left_shift(temp[1], 1));
+            keys[1] = P8(left_shift(temp[0], 3), left_shift(temp[1], 3));
             return keys;
         }
 
-        // decimal to binary string
-        public string decimal2binstr(byte num)
+        private string dec_to_Bin(byte num)
         {
             string ret = "";
             for (int i = 0; i < 8; i++)
@@ -142,8 +133,7 @@ namespace SDES
             return ret;
         }
 
-        // binary to decimal string
-        public byte binstr2decimal(string binstr)
+        private byte bin_to_Dec(string binstr)
         {
             byte ret = 0;
             for (int i = 0; i < binstr.Length; i++)
@@ -155,7 +145,7 @@ namespace SDES
             return ret;
         }
 
-        public string bin2str(bool input)
+        private string get_String(bool input)
         {
             if (input)
                 return "1";
@@ -163,7 +153,7 @@ namespace SDES
                 return "0";
         }
 
-        public bool str2bin(char bit)
+        private bool string_to_bin(char bit)
         {
             if (bit == '0')
                 return false;
@@ -173,11 +163,8 @@ namespace SDES
                 throw new Exception("Key should be in binary format [0,1]");
         }
 
-        //generates  permated array P10
-        BitArray P10(BitArray key)
+        private BitArray P10(BitArray key)
         {
-            //0 1 2 3 4 5 6 7 8 9
-            //2 4 1 6 3 9 0 8 7 5
             BitArray permutatedArray = new BitArray(10);
 
             permutatedArray[0] = key[2];
@@ -194,46 +181,36 @@ namespace SDES
             return permutatedArray;
         }
 
-        //generates permuted array P8
-        BitArray P8(BitArray part1, BitArray part2)
+        private BitArray P8(BitArray part1, BitArray part2)
         {
-            //0 1 2 3 4 5 6 7
-            //5 2 6 3 7 4 9 8
-            //6 3 7 4 8 5 10 9
             BitArray permutatedArray = new BitArray(8);
 
-            permutatedArray[0] = part2[0];//5
+            permutatedArray[0] = part2[0];
             permutatedArray[1] = part1[2];
-            permutatedArray[2] = part2[1];//6
+            permutatedArray[2] = part2[1];
             permutatedArray[3] = part1[3];
-            permutatedArray[4] = part2[2];//7
+            permutatedArray[4] = part2[2];
             permutatedArray[5] = part1[4];
-            permutatedArray[6] = part2[4];//9
-            permutatedArray[7] = part2[3];//8
+            permutatedArray[6] = part2[4];
+            permutatedArray[7] = part2[3];
 
             return permutatedArray;
         }
 
-        BitArray P4(BitArray part1, BitArray part2)
+        private BitArray P4(BitArray part1, BitArray part2)
         {
-            //0 1 2 3
-            //2 4 3 1
-            //1 3 2 0
             BitArray permutatedArray = new BitArray(4);
 
             permutatedArray[0] = part1[1];
-            permutatedArray[1] = part2[1];//3
-            permutatedArray[2] = part2[0];//2
+            permutatedArray[1] = part2[1];
+            permutatedArray[2] = part2[0];
             permutatedArray[3] = part1[0];
 
             return permutatedArray;
         }
 
-        BitArray EP(BitArray input)
+        private BitArray EP(BitArray input)
         {
-            //0 1 2 3
-            //4 1 2 3 2 3 4 1
-            //3 0 1 2 1 2 3 0
             BitArray permutatedArray = new BitArray(8);
 
             permutatedArray[0] = input[3];
@@ -248,11 +225,8 @@ namespace SDES
             return permutatedArray;
         }
 
-        //generates permuted text IP
-        BitArray IP(BitArray plainText)
+        private BitArray IP(BitArray plainText)
         {
-            //0 1 2 3 4 5 6 7
-            //1 5 2 0 3 7 4 6
             BitArray permutatedArray = new BitArray(8);
 
             permutatedArray[0] = plainText[1];
@@ -267,11 +241,8 @@ namespace SDES
             return permutatedArray;
         }
 
-        BitArray RIP(BitArray permutedText)
+        private BitArray IP_Inverse(BitArray permutedText)
         {
-            //0 1 2 3 4 5 6 7 
-            //3 0 2 4 6 1 7 5
-
             BitArray permutatedArray = new BitArray(8);
 
             permutatedArray[0] = permutedText[3];
@@ -286,7 +257,7 @@ namespace SDES
             return permutatedArray;
         }
 
-        BitArray Circular_left_shift(BitArray a, int bitNumber)
+        private BitArray left_shift(BitArray a, int bitNumber)
         {
             BitArray shifted = new BitArray(a.Length);
             int index = 0;
@@ -297,7 +268,7 @@ namespace SDES
             return shifted;
         }
 
-        BitArray[] Split_Block(BitArray block)
+        private BitArray[] Split_Block(BitArray block)
         {
             BitArray[] splited = new BitArray[2];
             splited[0] = new BitArray(block.Length / 2);
@@ -315,7 +286,7 @@ namespace SDES
             return splited;
         }
 
-        BitArray S_Boxes(BitArray input, int no)
+        private BitArray S_Boxes(BitArray input, int no)
         {
             BitArray[,] current_S_Box;
 
@@ -324,17 +295,17 @@ namespace SDES
             else
                 current_S_Box = Swap_Box1;
 
-            return current_S_Box[binstr2decimal(bin2str(input[0]) + bin2str(input[3])),
-                binstr2decimal(bin2str(input[1]) + bin2str(input[2]))];
+            return current_S_Box[bin_to_Dec(get_String(input[0]) + get_String(input[3])),
+                bin_to_Dec(get_String(input[1]) + get_String(input[2]))];
         }
 
-        BitArray F(BitArray right, BitArray sk)
+        private BitArray F(BitArray right, BitArray sk)
         {
             BitArray[] temp = Split_Block(Xor(EP(right), sk));
             return P4(S_Boxes(temp[0], 1), S_Boxes(temp[1], 2));
         }
 
-        BitArray Fk(BitArray IP, BitArray key)
+        private BitArray Fk(BitArray IP, BitArray key)
         {
             BitArray[] temp = Split_Block(IP);
             BitArray Left = Xor(temp[0], F(temp[1], key));
@@ -351,7 +322,7 @@ namespace SDES
             return joined;
         }
 
-        BitArray Switch(BitArray input)
+        private BitArray Swap(BitArray input)
         {
             BitArray switched = new BitArray(8);
             int index = 0;
@@ -362,7 +333,7 @@ namespace SDES
             return switched;
         }
 
-        BitArray Xor(BitArray a, BitArray b)
+        private BitArray Xor(BitArray a, BitArray b)
         {
             return b.Xor(a);
         }

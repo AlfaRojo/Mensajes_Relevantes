@@ -21,9 +21,9 @@ namespace Console_SDES
                     case 1:
                         Console.Clear();
                         Console.WriteLine("Ingrese texto");
-                        string encrypted_Text = encryptDecrypt.Encrypt(Console.ReadLine(), "0001100000");
+                        string encrypted_Text = encryptDecrypt.Encrypt(Console.ReadLine(), "0110100101");
                         Console.WriteLine("Texto Cifrado: " + encrypted_Text);
-                        string decrypted_Text = encryptDecrypt.Decrypt(encrypted_Text, "0001100000");
+                        string decrypted_Text = encryptDecrypt.Decrypt(encrypted_Text, "0110100101");
                         Console.WriteLine("Texto Descifrado: " + decrypted_Text);
                         Console.ReadKey();
                         break;
