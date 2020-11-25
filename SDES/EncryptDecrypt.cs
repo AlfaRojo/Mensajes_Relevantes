@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace SDES
@@ -37,7 +38,12 @@ namespace SDES
                     {
                         output[i] = s_DES.Encrypt(input[i]);
                     }
-                    password += Encoding.Default.GetString(output);
+                    foreach (var item in output)
+                    {
+                        password += Convert.ToChar(item);
+                    }
+
+                    
                 } 
             }
             return password;
@@ -75,6 +81,12 @@ namespace SDES
                     {
                         output[i] = s_DES.Decrypt(input[i]);
                     }
+
+                    foreach (var item in output)
+                    {
+                        password += Convert.ToChar(item);
+                    }
+
                     password += Encoding.Default.GetString(output);
                 }
             }

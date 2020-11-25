@@ -3,6 +3,8 @@ using System.Linq;
 using Mensajes_Relevantes.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using DiffieHelman;
+using SDES;
 
 
 
@@ -44,6 +46,8 @@ namespace MRDB.Models
 
 
             Data.Instance.user = searchUser.ToListAsync<User>().Result[0];
+            EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+            var ORIGINAL = encryptDecrypt.Decrypt(Data.Instance.user.Password, "0110100101");
             var Result = (searchUser.Any<User>()) ? true : false;
             return Result;
         }
