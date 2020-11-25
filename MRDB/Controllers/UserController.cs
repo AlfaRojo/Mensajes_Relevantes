@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
 using DiffieHelman;
+using SDES;
 
 namespace MRDB.Controllers
 {
@@ -38,8 +39,9 @@ namespace MRDB.Controllers
         {
             try
             {
+                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-                Operation.CreateUser(collection["name"], collection["Nick_Name"],collection["password"]);
+                Operation.CreateUser(collection["name"], collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
                 return View();
             }
             catch
@@ -54,12 +56,13 @@ namespace MRDB.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(IFormCollection collection)
+        public ActionResult LoginAsync(IFormCollection collection)
         {
             try
             {
+                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-                var result = Operation.SearchUser(collection["Nick_Name"], collection["password"]);
+                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
                 if (result == true) { return RedirectToAction("Message", "User"); }
                 else { return View(); }
             }

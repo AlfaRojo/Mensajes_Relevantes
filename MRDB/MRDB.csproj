@@ -13,6 +13,7 @@
     <ProjectReference Include="..\DiffieHelman\DiffieHelman.csproj" />
     <ProjectReference Include="..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj" />
     <ProjectReference Include="..\Mensajes_Relevantes\Mensajes_Relevantes.csproj" />
+    <ProjectReference Include="..\SDES\SDES.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
