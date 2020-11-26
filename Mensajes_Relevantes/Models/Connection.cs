@@ -9,5 +9,7 @@ namespace Mensajes_Relevantes.Models
     {
         public Message DataMessage { get; set; }
         public Chat DataChat { get; set; }
+
+        public string nickName { get; set; }
     }
 }

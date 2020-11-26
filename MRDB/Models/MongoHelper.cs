@@ -18,10 +18,6 @@ namespace MRDB.Models
         public static IMongoCollection<History> History_Collection { get; set; }
         public static IMongoCollection<Message> Message_Collection { get; set; }
 
-        //PRUEBA
-        public static IMongoCollection<Charecter> Character_Collection { get; set; }
-    
-        //
         internal static void ConnectToMongoService()
         {
             try

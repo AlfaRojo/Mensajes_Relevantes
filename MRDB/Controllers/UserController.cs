@@ -21,11 +21,6 @@ namespace MRDB.Controllers
             return View();
         }
 
-        public ActionResult Menu()
-        {
-            return View();
-        }
-
         // GET: UserController/Create
         public ActionResult Create()
         {
@@ -63,7 +58,12 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
                 var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
-                if (result == true) { return RedirectToAction("Message", "User"); }
+                if (result == true) {
+                    Connection connection = new Connection();
+                    connection.nickName = Request.Form["Nick_Name"];
+                    HttpContext.Session.SetString("Nick_Name", connection.nickName);
+                    return RedirectToAction("Menu", "User"); 
+                }
                 else { return View(); }
             }
             catch
@@ -73,46 +73,13 @@ namespace MRDB.Controllers
 
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+
+        public ActionResult Menu()
         {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+           
             return View();
         }
 
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
