@@ -16,9 +16,6 @@ namespace Mensajes_Relevantes.Models
         [BsonElement("text")]
         public string Text { get; set; }
 
-        [BsonElement("fileName")]
-        public IFormFile FileName { get; set; }
-
         [BsonElement("file_ID")]
         public string file_ID { get; set; }
 

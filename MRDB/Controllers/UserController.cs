@@ -6,7 +6,6 @@ using MRDB.Models;
 using DiffieHelman;
 using SDES;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace MRDB.Controllers
 {
@@ -19,17 +18,18 @@ namespace MRDB.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> MessageAsync(Message message)
+        public async Task<ActionResult> MessageAsync(Message message, IFormFile file)
         {
             string id_file = string.Empty;
             string text = string.Empty;
-            if (message.FileName != null)
+            if (file != null)
             {
                 Import import = new Import();
-                id_file = await import.Upload_FileAsync(message.FileName);
+                id_file = await import.Upload_FileAsync(file);
             }
             if (message.Text != null)
             {
+                //Hay que obtener el código DH entre usuarios para ser el código que se envie para encriptar
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 text = encryptDecrypt.Encrypt(message.Text, "0110101001");
             }
