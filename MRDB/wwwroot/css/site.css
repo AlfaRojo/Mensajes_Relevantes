@@ -58,6 +58,16 @@ input.SearchFileButton {
     transform: translate(200px,-77px)
 }
 
+input.MessageButton {
+    border-radius: 30px;
+    background: darkslategrey;
+    color: white;
+    width: 168px;
+    height: 74px;
+    transform: translate(3px,144px);
+    border: double;
+}
+
 form.Login {
     border: 2px groove white;
     border-radius: 5px;
@@ -68,7 +78,6 @@ form.Login {
     left: 110%;
     transform: translateY(25%);
 }
-
 
 form.Create {
     border: 2px groove white;
@@ -103,6 +112,31 @@ form.Menu2 {
     left: 80%;
     transform: translateY(25%);
 }
+
+form.Menu3 {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 341px;
+    height: 321px;
+    position: absolute;
+    top: 110%;
+    left: 56%;
+    transform: translateY(37%);
+}
+
+form.Menu4 {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 341px;
+    height: 321px;
+    position: absolute;
+    top: 110%;
+    left: 160%;
+    transform: translateY(37%);
+}
+
 
 textarea.ViewInformation {
     background-color: steelblue;
