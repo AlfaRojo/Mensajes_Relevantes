@@ -73,11 +73,16 @@ namespace MRDB.Controllers
 
         }
 
-
         public ActionResult Menu()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
            
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             return View();
         }
 
