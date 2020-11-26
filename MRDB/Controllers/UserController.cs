@@ -19,6 +19,9 @@ namespace MRDB.Controllers
         [HttpPost]
         public ActionResult Message(Message message)
         {
+            var date = DateTime.Today;
+            message.SendDate = date.ToShortDateString();
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             return View();
         }
 
