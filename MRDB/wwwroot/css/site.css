@@ -21,6 +21,12 @@ p {
 h1 {
     color: white;
     text-align: center;
+    transform: translateY(200%);
+}
+
+h1.title1 {      
+    color: white;
+    text-align: center;
     transform: translateY(-10%);
 }
 
