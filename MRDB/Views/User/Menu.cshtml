@@ -4,19 +4,24 @@
 
 }
 
-<p>User conneting: @ViewBag.sessionv</p>
+<p>Conecting: @ViewBag.sessionv</p>
 <h1>Principal Menu</h1>
 
 <hr />
-<img src="images\descargar.jpg" alt="Sample Photo" />
+
 <div class="row">
     <div class="col-md-4">
+        <div>
+            <img src="https://github.com/EbGu3/BTREE/blob/master/Images/mensaje.png?raw=true" class="image" />
+        </div>
         <form asp-action="Menu" class="Menu3">
-            
             <div class="form-group">
                 <input type="button" value="Messages" onclick="location.href='@Url.Action("Message", "User")'" class="MessageButton" />
             </div>
         </form>
+        <div>
+            <img src="https://github.com/EbGu3/BTREE/blob/master/Images/contacto.png?raw=true" class="image2" />
+        </div>
         <form asp-action="Menu" class="Menu4">
             <div class="form-group">
                 <input type="button" value="Contacts" onclick="location.href='@Url.Action("Contact", "User")'" class="MessageButton" />
