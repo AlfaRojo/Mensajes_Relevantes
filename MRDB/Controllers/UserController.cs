@@ -83,7 +83,10 @@ namespace MRDB.Controllers
         public ActionResult Contact()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            return View();
+            UserInformation userInformation = new UserInformation();
+            userInformation.SetContactCollection();
+            var GetContacts = userInformation.GetAllContacts();
+            return View(GetContacts);
         }
 
     }

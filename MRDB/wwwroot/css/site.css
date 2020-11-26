@@ -21,7 +21,7 @@ p {
 h1 {
     color: white;
     text-align: center;
-    transform: translateY(200%);
+    transform: translateY(-10%);
 }
 
 label{
@@ -166,7 +166,9 @@ img.image4 {
     mix-blend-mode: color-burn;
 }
 
-
+table.table {
+    color: white;
+}
 
 main {
     text-align: center;

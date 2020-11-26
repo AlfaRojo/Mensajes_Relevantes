@@ -14,6 +14,7 @@ namespace MRDB.Models
 
 
         public static IMongoCollection<User> User_Collection { get; set; }
+        public static IMongoCollection<Contact> Contact_Collection { get; set; }
         public static IMongoCollection<Chat> Chat_Collection { get; set; }
         public static IMongoCollection<History> History_Collection { get; set; }
         public static IMongoCollection<Message> Message_Collection { get; set; }
