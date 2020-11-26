@@ -13,6 +13,7 @@ namespace MRDB.Controllers
 
         public ActionResult Message()
         {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             return View();
         }
         [HttpPost]
@@ -25,7 +26,6 @@ namespace MRDB.Controllers
         public ActionResult Create()
         {
              return View();
-  
         }
 
         // POST: UserController/Create
@@ -37,7 +37,7 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
                 Operation.CreateUser(collection["name"], collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
-                return View();
+                return RedirectToAction("Login");
             }
             catch
             {
@@ -46,7 +46,7 @@ namespace MRDB.Controllers
         }
 
         // GET: UserController
-        public ActionResult Login()
+        public ActionResult LoginAsync()
         {
             return View();
         }
@@ -62,7 +62,7 @@ namespace MRDB.Controllers
                     Connection connection = new Connection();
                     connection.nickName = Request.Form["Nick_Name"];
                     HttpContext.Session.SetString("Nick_Name", connection.nickName);
-                    return RedirectToAction("Menu", "User"); 
+                    return RedirectToAction("Message", "User"); 
                 }
                 else { return View(); }
             }
@@ -72,14 +72,5 @@ namespace MRDB.Controllers
             }
 
         }
-
-
-        public ActionResult Menu()
-        {
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-           
-            return View();
-        }
-
     }
 }
