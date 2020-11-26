@@ -47,6 +47,7 @@ namespace MRDB.Models
                 content = all_File,
                 name = full_Name
             });
+            files.Delete_Files_Compress();
             return new_id;
         }
 
