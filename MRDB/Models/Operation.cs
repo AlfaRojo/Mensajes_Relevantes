@@ -64,5 +64,19 @@ namespace MRDB.Models
             var DH_Value = searchUser.ToListAsync<User>().Result[0].DH;
             return DH_Value;
         }
+
+        public FileDB Find_File(string id)
+        {
+            MongoHelper.ConnectToMongoService();
+            var UserCollection = MongoHelper.Database.GetCollection<FileDB>("File");
+            var filesDB = UserCollection.AsQueryable<FileDB>();
+
+            var search_File = from myFile in filesDB
+                             where (string)myFile.id == id
+                             select myFile;
+
+            var this_file = search_File.ToListAsync<FileDB>().Result[0];
+            return this_file;
+        }
     }
 }

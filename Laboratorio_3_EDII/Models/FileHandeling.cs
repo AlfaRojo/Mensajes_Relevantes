@@ -9,6 +9,7 @@ namespace Laboratorio_3_EDII.Models
 {
     public class FileHandeling
     {
+
         /// <summary>
         /// Create Upload and Compress files
         /// </summary>
@@ -23,45 +24,22 @@ namespace Laboratorio_3_EDII.Models
                 Directory.CreateDirectory($"Compress");
             }
         }
+
         /// <summary>
         /// Create Upload and Decompress files
         /// </summary>
         public void Create_File_Export()
         {
-            if (!Directory.Exists($"Upload"))
+            if (!Directory.Exists($"Download"))
             {
-                Directory.CreateDirectory($"Upload");
+                Directory.CreateDirectory($"Download");
             }
             if (!Directory.Exists($"Decompress"))
             {
                 Directory.CreateDirectory($"Decompress");
             }
         }
-        /// <summary>
-        /// Huffman compress files
-        /// </summary>
-        /// <param name="new_Path"></param>
-        /// <param name="name"></param>
-        public void Compress_Huffman(string new_Path, string name)
-        {
-            using (var new_File = new FileStream(new_Path, FileMode.Open))
-            {
-                CompressHuffman Huffman = new CompressHuffman();
-                Huffman.Compress_File(new_File, name);
-            }
-        }
-        /// <summary>
-        /// Huffman decompress files
-        /// </summary>
-        /// <param name="new_Path"></param>
-        public void Decompress_Huffman(string new_Path)
-        {
-            using (var new_File = new FileStream(new_Path, FileMode.Open))
-            {
-                CompressHuffman Huffman = new CompressHuffman();
-                Huffman.Decompress_File(new_File);
-            }
-        }
+
         /// <summary>
         /// LZW compress files
         /// </summary>
@@ -75,6 +53,7 @@ namespace Laboratorio_3_EDII.Models
                 compressLZW.Compress_File(new_File, name);
             }
         }
+
         /// <summary>
         /// LZW decompress files
         /// </summary>
@@ -88,6 +67,7 @@ namespace Laboratorio_3_EDII.Models
                 compressLZW.Decompress_File(new_File);
             }
         }
+
         public void Delete_Import(string path)
         {
             File.Delete(path);

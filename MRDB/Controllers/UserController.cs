@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
 using DiffieHelman;
 using SDES;
+using System.Threading.Tasks;
 
 namespace MRDB.Controllers
 {
@@ -17,8 +18,13 @@ namespace MRDB.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Message(Message message)
+        public async Task<ActionResult> MessageAsync(Message message)
         {
+            if (message.FileName != null)
+            {
+                Import import = new Import();
+                var id_file = await import.Upload_FileAsync(message.FileName);
+            }
             var date = DateTime.Today;
             message.SendDate = date.ToShortDateString();
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
@@ -28,7 +34,7 @@ namespace MRDB.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-             return View();
+            return View();
         }
 
         // POST: UserController/Create
@@ -61,11 +67,12 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
                 var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
-                if (result == true) {
+                if (result == true)
+                {
                     Connection connection = new Connection();
                     connection.nickName = Request.Form["Nick_Name"];
                     HttpContext.Session.SetString("Nick_Name", connection.nickName);
-                    return RedirectToAction("Message", "User"); 
+                    return RedirectToAction("Message", "User");
                 }
                 else { return View(); }
             }
