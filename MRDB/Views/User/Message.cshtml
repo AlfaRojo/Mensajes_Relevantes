@@ -17,7 +17,7 @@
                 <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
             </div>
             <div class="form-group">
-                <input placeholder="Write" asp-for="Text" class="Write" />
+                <input placeholder="Write" asp-for="Text" class="Write" name="message.Text"/>
                 <label asp-for="Text" class="control-label"></label>
                 <input asp-for="Text" class="form-control" />
                 <span asp-validation-for="Text" class="text-danger"></span>

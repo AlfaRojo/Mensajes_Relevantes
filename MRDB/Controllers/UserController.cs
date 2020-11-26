@@ -6,6 +6,7 @@ using MRDB.Models;
 using DiffieHelman;
 using SDES;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MRDB.Controllers
 {
@@ -20,14 +21,28 @@ namespace MRDB.Controllers
         [HttpPost]
         public async Task<ActionResult> MessageAsync(Message message)
         {
+            string id_file = string.Empty;
+            string text = string.Empty;
             if (message.FileName != null)
             {
                 Import import = new Import();
-                var id_file = await import.Upload_FileAsync(message.FileName);
+                id_file = await import.Upload_FileAsync(message.FileName);
+            }
+            if (message.Text != null)
+            {
+                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+                text = encryptDecrypt.Encrypt(message.Text, "0110101001");
+            }
+            if (text == null && id_file == null)
+            {
+                return View();
             }
             var date = DateTime.Today;
             message.SendDate = date.ToShortDateString();
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            message.emisor = HttpContext.Session.GetString("Nick_Name");
+            Operation operation = new Operation();
+            operation.Insert_Chat(text, message.SendDate, id_file, message.emisor);
+            ViewBag.sessionv = message.emisor;
             return View();
         }
 

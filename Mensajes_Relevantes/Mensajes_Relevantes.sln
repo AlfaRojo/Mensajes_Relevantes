@@ -7,13 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mensajes_Relevantes", "Mens
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRDB", "..\MRDB\MRDB.csproj", "{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB71D243-022F-4C6A-B4EE-42F7DC65AF47}"
-	ProjectSection(SolutionItems) = preProject
-		Message.json = Message.json
-		Prueba.json = Prueba.json
-		Prueba.txt = Prueba.txt
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiffieHelman", "..\DiffieHelman\DiffieHelman.csproj", "{2256F2EA-9DA7-4A27-9247-9A49E71D76C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDES", "..\SDES\SDES.csproj", "{565D7578-E60D-4C62-9849-05405A59B012}"
