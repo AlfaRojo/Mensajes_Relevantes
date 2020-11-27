@@ -27,6 +27,7 @@ namespace Mensajes_Relevantes.Models
         public User()
         {
             Friends = new List<Contact>();
+            
         }
 
         public User(object nickname, string name, string password, int DH, List<Contact> friends)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using DiffieHelman;
 
 namespace MRDB.Models
 {
@@ -21,9 +22,12 @@ namespace MRDB.Models
             UserContacts = ContactCollection.Find(d => true).ToList();
             return UserContacts;
         }
-
+        
         public List<User> GetAllUser()
         {
+            MongoHelper.ConnectToMongoService();
+            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
+            _User = UserCollection.Find(d => true).ToList();
             return _User;
         }
 
@@ -50,13 +54,32 @@ namespace MRDB.Models
 
         public void SetContactUser(Contact id, string ActualUser)
         {
+            var user = new User();
             MongoHelper.ConnectToMongoService();
             var UserCollection = MongoHelper.Database.GetCollection<User>("User");
-            foreach (var item in _User)
+            var User1 = _User.Find(x => (string)x.Nick_Name == ActualUser);
+            var User2 = _User.Find(x => (string)x.Nick_Name == id.Nick_Name);
+            user = User1;
+
+            if(user.Friends.Count > 0 )
             {
-                var Search = _User.Find(x => x.Friends.Exists(F => F.Nick_Name == id.Nick_Name));
-                
+                var Search = User1.Friends.Exists(x => x.id_Contact == id.id_Contact);
+                if (!Search)
+                {
+                    user.Get_DH();
+                    //id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH);
+                    user.Friends.Add(id);
+                    UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
+                   
+                }
             }
+            else
+            {
+                user.Get_DH();
+                //id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH);
+                user.Friends.Add(id);
+                UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
+            }            
         }
         public UserInformation()
         {

@@ -14,6 +14,6 @@ namespace Mensajes_Relevantes.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string id_Contact { get; set; }
         public string Nick_Name { get; set; }
-
+        //public System.Numerics.BigInteger Key { get; set; }
     }
 }

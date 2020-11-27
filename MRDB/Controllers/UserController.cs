@@ -85,12 +85,14 @@ namespace MRDB.Controllers
         {
             UserInformation userInformation = new UserInformation();
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            if (!id.Equals(" "))
+            if((id.id_Contact != null) && (id.Nick_Name != ViewBag.sessionv))
             {
-                Update(id, (string)ViewBag.sessionv);
-                return View();
+                userInformation.GetAllUser();
+                userInformation.SetContactUser(id, (string)ViewBag.sessionv);
+                return RedirectToAction("Menu", "User");
             }
             else{
+                
                 userInformation.SetContactCollection();
                 var GetContacts = userInformation.GetAllContacts();
                 return View(GetContacts);
@@ -104,11 +106,6 @@ namespace MRDB.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult Update(Contact id,string actualUser)
-        {
-
-            return RedirectToAction("User", "Contact");
-        }
+     
     }
 }
