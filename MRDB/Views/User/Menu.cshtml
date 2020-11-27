@@ -1,34 +1,32 @@
 ﻿@model Mensajes_Relevantes.Models.Connection;
 @{
-    ViewData["Title"] = "Messages";
+    ViewData["Title"] = "Menu";
 
 }
 
-<p>User conneting: @ViewBag.sessionv</p>
-<h1>Messages</h1>
+<p>Conecting: @ViewBag.sessionv</p>
+<h1>Principal Menu</h1>
 
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-
-        <form asp-action="Menu" class="Menu">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input placeholder="Escribir" asp-for="Text" class="Write" />
-                <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Send" class="SendButton" />
-            </div>
+        <div>
+            <img src="https://github.com/EbGu3/BTREE/blob/master/Images/mensaje.png?raw=true" class="image" />
+        </div>
+        <form asp-action="Menu" class="Menu3">
             <div class="form-group">
                 <input type="file" value="Search File" id="file" />
+                <input type="button" value="Messages" onclick="location.href='@Url.Action("Message", "User")'" class="MessageButton" />
+
             </div>
         </form>
-        <form asp-action="Menu" class="Menu2">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <img src="https://github.com/EbGu3/BTREE/blob/master/Images/contacto.png?raw=true" class="image2" />
+        </div>
+        <form asp-action="Menu" class="Menu4">
             <div class="form-group">
-                <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
+                <input type="button" value="Contacts" onclick="location.href='@Url.Action("Contact", "User")'" class="MessageButton" />
             </div>
         </form>
     </div>

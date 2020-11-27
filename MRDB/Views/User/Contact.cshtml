@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Mensajes_Relevantes.Models.Contact>
+
+@{
+    ViewData["Title"] = "Contact";
+}
+<p>Conecting: @ViewBag.sessionv</p>
+<h1 class="title1">Contact</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id_Contact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nick_Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_Contact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nick_Name)
+            </td>
+            <td>
+                @Html.ActionLink("Contact", "Contact", item)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

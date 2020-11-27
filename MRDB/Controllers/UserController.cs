@@ -82,8 +82,7 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
                 var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
-                if (result == true)
-                {
+                if (result) {
                     Connection connection = new Connection();
                     connection.nickName = Request.Form["Nick_Name"];
                     HttpContext.Session.SetString("Nick_Name", connection.nickName);
@@ -96,6 +95,37 @@ namespace MRDB.Controllers
                 return View();
             }
 
+        }
+        public ActionResult Menu()
+        {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+           
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Contact(Contact id)
+        {
+            UserInformation userInformation = new UserInformation();
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            if((id.id_Contact != null) && (id.Nick_Name != ViewBag.sessionv))
+            {
+                userInformation.GetAllUser();
+                userInformation.SetContactUser(id, (string)ViewBag.sessionv);
+                return RedirectToAction("Menu", "User");
+            }
+            else{
+                
+                userInformation.SetContactCollection();
+                var GetContacts = userInformation.GetAllContacts();
+                return View(GetContacts);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ContactI(Contact contact)
+        {
+            return RedirectToAction("Menu", "User");
         }
     }
 }
