@@ -25,9 +25,9 @@ h1 {
 }
 
 h1.title1 {      
-    color: white;
+    color: indianred;
     text-align: center;
-    transform: translateY(-10%);
+    transform: translateY(41%);
 }
 
 label{
@@ -173,7 +173,12 @@ img.image4 {
 }
 
 table.table {
-    color: white;
+    font-variant-caps: all-petite-caps;
+    color: darkcyan;
+    border-collapse: separate;
+    border: dotted;
+    border-color: seagreen;
+    transform: translateY(55px);
 }
 
 main {
