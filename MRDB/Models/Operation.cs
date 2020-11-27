@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mensajes_Relevantes.Models;
 using MongoDB.Driver;
@@ -9,9 +10,9 @@ namespace MRDB.Models
 {
     public class Operation
     {
-        private object GenerateObjectId(string key)
+        private string GenerateObjectId(string key)
         {
-            var Key = (object)Convert.ChangeType(key, typeof(object));
+            var Key = (string)Convert.ChangeType(key, typeof(object));
             return Key;
         }
 
@@ -20,7 +21,7 @@ namespace MRDB.Models
             Random rnd = new Random();
             MongoHelper.ConnectToMongoService();
             MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
-            Object id = GenerateObjectId(nickName);
+            string id = GenerateObjectId(nickName);
             MongoHelper.User_Collection.InsertOneAsync(new User
             {
                 Name = name,
@@ -88,6 +89,12 @@ namespace MRDB.Models
                 emisor = emisor
                 
             });
+        }
+
+        public List<User> Get_Contacts(string user_name)
+        {
+            MongoHelper.ConnectToMongoService();
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name != user_name).ToListAsync().Result;
         }
     }
 }

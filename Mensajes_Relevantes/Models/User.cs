@@ -11,7 +11,7 @@ namespace Mensajes_Relevantes.Models
     {
         [BsonId]
         [BsonElement("nickName")]
-        public Object Nick_Name { get; set; }
+        public string Nick_Name { get; set; }
 
         [BsonElement("name")]
         public string Name { get; set; }
@@ -30,7 +30,7 @@ namespace Mensajes_Relevantes.Models
             
         }
 
-        public User(object nickname, string name, string password, int DH, List<Contact> friends)
+        public User(string nickname, string name, string password, int DH, List<Contact> friends)
         {
             this.Nick_Name = nickname;
             this.Name = name;

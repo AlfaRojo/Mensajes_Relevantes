@@ -82,7 +82,8 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
                 var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
-                if (result) {
+                if (result)
+                {
                     Connection connection = new Connection();
                     connection.nickName = Request.Form["Nick_Name"];
                     HttpContext.Session.SetString("Nick_Name", connection.nickName);
@@ -99,7 +100,7 @@ namespace MRDB.Controllers
         public ActionResult Menu()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-           
+
             return View();
         }
 
@@ -107,18 +108,21 @@ namespace MRDB.Controllers
         public ActionResult Contact(Contact id)
         {
             UserInformation userInformation = new UserInformation();
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            if((id.id_Contact != null) && (id.Nick_Name != ViewBag.sessionv))
+
+            string user_name = HttpContext.Session.GetString("Nick_Name");
+            ViewBag.sessionv = user_name;
+            if ((id.id_Contact != null) && (id.Nick_Name != ViewBag.sessionv))
             {
                 userInformation.GetAllUser();
                 userInformation.SetContactUser(id, (string)ViewBag.sessionv);
                 return RedirectToAction("Menu", "User");
             }
-            else{
-                
-                userInformation.SetContactCollection();
-                var GetContacts = userInformation.GetAllContacts();
-                return View(GetContacts);
+            else
+            {
+                //userInformation.SetContactCollection();
+                //var GetContacts = userInformation.GetAllContacts();
+                Operation operation = new Operation();
+                return View(operation.Get_Contacts(user_name));
             }
         }
 

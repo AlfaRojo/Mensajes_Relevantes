@@ -5,7 +5,7 @@ namespace DiffieHelman
 {
     public class DiffieH
     {
-        public static System.Numerics.BigInteger DiffieHelmannAlgorithm(int numberA, int numberB)
+        public static BigInteger DiffieHelmannAlgorithm(int numberA, int numberB)
         {
             Random rnd = new Random();
             BigInteger numberG = rnd.Next(10, 31);

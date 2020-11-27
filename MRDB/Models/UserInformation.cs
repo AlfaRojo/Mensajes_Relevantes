@@ -1,12 +1,8 @@
 ﻿using Mensajes_Relevantes.Models;
 using MRDB.IService;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using DiffieHelman;
 
 namespace MRDB.Models
@@ -67,7 +63,7 @@ namespace MRDB.Models
                 if (!Search)
                 {
                     user.Get_DH();
-                    //id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH);
+                    id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
                     user.Friends.Add(id);
                     UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
                    
@@ -76,7 +72,7 @@ namespace MRDB.Models
             else
             {
                 user.Get_DH();
-                //id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH);
+                id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
                 user.Friends.Add(id);
                 UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
             }            
