@@ -18,10 +18,18 @@ namespace MRDB.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> MessageAsync(Message message, IFormFile file)
+        public async Task<ActionResult> Message(Message message, IFormFile file)
         {
             string id_file = string.Empty;
             string text = string.Empty;
+            if (text == null && id_file == null)
+            {
+                return View();
+            }
+            Operation operation = new Operation();
+            var date = DateTime.Today;
+            message.SendDate = date.ToShortDateString();
+            message.emisor = HttpContext.Session.GetString("Nick_Name");
             if (file != null)
             {
                 Import import = new Import();
@@ -29,18 +37,10 @@ namespace MRDB.Controllers
             }
             if (message.Text != null)
             {
-                //Hay que obtener el código DH entre usuarios para ser el código que se envie para encriptar
+                var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-                text = encryptDecrypt.Encrypt(message.Text, "0110101001");
+                text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
             }
-            if (text == null && id_file == null)
-            {
-                return View();
-            }
-            var date = DateTime.Today;
-            message.SendDate = date.ToShortDateString();
-            message.emisor = HttpContext.Session.GetString("Nick_Name");
-            Operation operation = new Operation();
             operation.Insert_Chat(text, message.SendDate, id_file, message.emisor);
             ViewBag.sessionv = message.emisor;
             return View();
@@ -58,9 +58,9 @@ namespace MRDB.Controllers
         {
             try
             {
-                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+
                 var Operation = new Operation();
-                Operation.CreateUser(collection["name"], collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
+                Operation.CreateUser(collection["name"], collection["Nick_Name"], collection["password"]);
                 return RedirectToAction("Login");
             }
             catch
@@ -81,7 +81,8 @@ namespace MRDB.Controllers
             {
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], "0110100101"));
+
+                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], Convert.ToString(Operation.Find_DH(collection["Nick_Name"]), 2)));
                 if (result)
                 {
                     Connection connection = new Connection();
@@ -113,7 +114,8 @@ namespace MRDB.Controllers
             ViewBag.sessionv = current_User;
             if (user.Nick_Name != null && user.Name != null)
             {
-                Contact contact = new Contact { 
+                Contact contact = new Contact
+                {
                     id_Contact = Guid.NewGuid().ToString(),
                     Nick_Name = user.Nick_Name
                 };

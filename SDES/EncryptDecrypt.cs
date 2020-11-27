@@ -8,6 +8,10 @@ namespace SDES
     {
         public string Encrypt(string plainText, string _key)
         {
+            if (_key.Length < 10)
+            {
+                _key = Complete_Bin(_key);
+            }
             S_DES s_DES = new S_DES(_key);
             string password = string.Empty;
             using (BinaryReader br = new BinaryReader(new MemoryStream(Encoding.ASCII.GetBytes(plainText))))
@@ -49,6 +53,10 @@ namespace SDES
 
         public string Decrypt(string plainText, string _key)
         {
+            if (_key.Length < 10)
+            {
+                _key = Complete_Bin(_key);
+            }
             string password = string.Empty;
             S_DES s_DES = new S_DES(_key);
             using (BinaryReader br = new BinaryReader(new MemoryStream(Encoding.ASCII.GetBytes(plainText))))
@@ -89,6 +97,12 @@ namespace SDES
                 }
             }
             return password;
+        }
+
+        private string Complete_Bin(string _key) 
+        {
+            _key = _key.PadLeft(10, '0');
+            return _key;
         }
     }
 }

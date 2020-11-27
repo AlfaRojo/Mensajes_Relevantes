@@ -10,16 +10,16 @@ namespace Mensajes_Relevantes.Models
     public class User
     {
         [BsonId]
-        [BsonElement("nickName")]
+        [BsonElement("Nick_Name")]
         public string Nick_Name { get; set; }
 
-        [BsonElement("name")]
+        [BsonElement("Name")]
         public string Name { get; set; }
 
         [BsonElement("password")]
         public string Password { get; set; }
 
-        [BsonElement("HD")]
+        [BsonElement("DH")]
         public int DH { get; set; }
 
         public List<Contact> Friends;

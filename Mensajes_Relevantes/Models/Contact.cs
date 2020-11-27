@@ -14,6 +14,6 @@ namespace Mensajes_Relevantes.Models
         public string Nick_Name { get; set; }
 
         [BsonElement("DH_Key")]
-        public string DH_Key { get; set; }
+        public int DH_Key { get; set; }
     }
 }

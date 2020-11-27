@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Laboratorio_3_EDII.Models;
-using MongoDB.Driver;
 using System;
 
 namespace MRDB.Models

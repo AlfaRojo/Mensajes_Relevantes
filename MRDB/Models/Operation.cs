@@ -10,25 +10,27 @@ namespace MRDB.Models
 {
     public class Operation
     {
-        private string GenerateObjectId(string key)
-        {
-            var Key = (string)Convert.ChangeType(key, typeof(object));
-            return Key;
-        }
-
         public void CreateUser(string name, string nickName, string password)
         {
             Random rnd = new Random();
             MongoHelper.ConnectToMongoService();
             MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
-            string id = GenerateObjectId(nickName);
+            int DH_code = rnd.Next(250, 1022);
+            password = Encrypt_Pass(password, DH_code);
             MongoHelper.User_Collection.InsertOneAsync(new User
             {
                 Name = name,
-                Nick_Name = id,
+                Nick_Name = nickName,
                 Password = password,
-                DH = rnd.Next(100, 800)
+                DH = DH_code
             });
+        }
+
+        private string Encrypt_Pass(string pass, int DH_code)
+        {
+            EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+            pass = encryptDecrypt.Encrypt(pass, Convert.ToString(DH_code, 2));
+            return pass;
         }
 
         public bool SearchUser(string nickName, string password)
@@ -62,8 +64,8 @@ namespace MRDB.Models
             var filesDB = UserCollection.AsQueryable<FileDB>();
 
             var search_File = from myFile in filesDB
-                             where (string)myFile.id == id
-                             select myFile;
+                              where (string)myFile.id == id
+                              select myFile;
 
             var this_file = search_File.ToListAsync<FileDB>().Result[0];
             return this_file;
@@ -74,13 +76,14 @@ namespace MRDB.Models
             var new_id = Guid.NewGuid().ToString();
             MongoHelper.ConnectToMongoService();
             MongoHelper.Message_Collection = MongoHelper.Database.GetCollection<Message>("Chat");
-            MongoHelper.Message_Collection.InsertOneAsync(new Message { 
+            MongoHelper.Message_Collection.InsertOneAsync(new Message
+            {
                 Id_Message = new_id,
                 Text = text,
                 file_ID = fileID,
                 SendDate = date,
                 emisor = emisor
-                
+
             });
         }
 
@@ -90,10 +93,11 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name != user_name).ToListAsync().Result;
         }
 
-        public void Add_Contact(string name, string DH)
+        public int Get_DH_Group(string emisor, string receptor)
         {
             MongoHelper.ConnectToMongoService();
-
+            var myContact = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).ToListAsync().Result[0].Friends[0].DH_Key;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).ToListAsync().Result[0].Friends[0].DH_Key;
         }
     }
 }
