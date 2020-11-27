@@ -24,7 +24,7 @@ namespace DiffieHelman
         {
             var rand = new Random();
             int value = rand.Next(50, 547);
-            for (int i = value; i < 300; i++)
+            for (int i = value; i < 548; i++)
             {
                 if (isPrime(i))
                 {
