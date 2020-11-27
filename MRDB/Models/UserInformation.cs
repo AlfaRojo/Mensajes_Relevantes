@@ -14,7 +14,7 @@ namespace MRDB.Models
     {
         public List<Contact> UserContacts;
         public List<User> _User;
-        public IEnumerable<Contact> GetAllContacts()
+        public List<Contact> GetAllContacts()
         {
             MongoHelper.ConnectToMongoService();
             var ContactCollection = MongoHelper.Database.GetCollection<Contact>("Contact");
@@ -22,9 +22,9 @@ namespace MRDB.Models
             return UserContacts;
         }
 
-        public User GetUser()
+        public List<User> GetAllUser()
         {
-            throw new NotImplementedException();
+            return _User;
         }
 
         public void SetContactCollection()
@@ -46,9 +46,18 @@ namespace MRDB.Models
 
                 }
             }
-            
         }
 
+        public void SetContactUser(Contact id, string ActualUser)
+        {
+            MongoHelper.ConnectToMongoService();
+            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
+            foreach (var item in _User)
+            {
+                var Search = _User.Find(x => x.Friends.Exists(F => F.Nick_Name == id.Nick_Name));
+                
+            }
+        }
         public UserInformation()
         {
             UserContacts = new List<Contact>();

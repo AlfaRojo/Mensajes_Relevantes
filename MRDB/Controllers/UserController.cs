@@ -80,14 +80,35 @@ namespace MRDB.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        [HttpGet]
+        public ActionResult Contact(Contact id)
         {
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             UserInformation userInformation = new UserInformation();
-            userInformation.SetContactCollection();
-            var GetContacts = userInformation.GetAllContacts();
-            return View(GetContacts);
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            if (!id.Equals(" "))
+            {
+                Update(id, (string)ViewBag.sessionv);
+                return View();
+            }
+            else{
+                userInformation.SetContactCollection();
+                var GetContacts = userInformation.GetAllContacts();
+                return View(GetContacts);
+            }
         }
 
+        [HttpPost]
+        public ActionResult ContactI(Contact contact)
+        {
+            return RedirectToAction("Menu", "User");
+        }
+
+
+        [HttpPost]
+        public ActionResult Update(Contact id,string actualUser)
+        {
+
+            return RedirectToAction("User", "Contact");
+        }
     }
 }

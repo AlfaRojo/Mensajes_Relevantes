@@ -9,7 +9,8 @@ namespace MRDB.IService
     public interface IUser
     {
         public void SetContactCollection();
-        public User GetUser();
-        public IEnumerable<Contact> GetAllContacts();
+        public List<Contact> GetAllContacts();
+
+        public List<User> GetAllUser();
     }
 }
