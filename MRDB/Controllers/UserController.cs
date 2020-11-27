@@ -86,7 +86,7 @@ namespace MRDB.Controllers
                     Connection connection = new Connection();
                     connection.nickName = Request.Form["Nick_Name"];
                     HttpContext.Session.SetString("Nick_Name", connection.nickName);
-                    return RedirectToAction("Message", "User");
+                    return RedirectToAction("Menu", "User");
                 }
                 else { return View(); }
             }
