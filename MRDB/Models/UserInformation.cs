@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using DiffieHelman;
+using System;
 
 namespace MRDB.Models
 {
@@ -48,33 +49,28 @@ namespace MRDB.Models
             }
         }
 
-        public void SetContactUser(Contact id, string ActualUser)
+        public void Add_Contact(Contact new_Contact, string ActualUser)
         {
-            var user = new User();
             MongoHelper.ConnectToMongoService();
-            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
-            var User1 = _User.Find(x => (string)x.Nick_Name == ActualUser);
-            var User2 = _User.Find(x => (string)x.Nick_Name == id.Nick_Name);
-            user = User1;
-
+            var User1 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == ActualUser).ToListAsync().Result[0];
+            var User2 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == new_Contact.Nick_Name).ToListAsync().Result[0];
+            var user = User1;
             if(user.Friends.Count > 0 )
             {
-                var Search = User1.Friends.Exists(x => x.id_Contact == id.id_Contact);
-                if (!Search)
+                if (!User1.Friends.Exists(x => x.id_Contact == new_Contact.id_Contact))
                 {
                     user.Get_DH();
-                    id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
-                    user.Friends.Add(id);
-                    UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
-                   
+                    new_Contact.DH_Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
+                    user.Friends.Add(new_Contact);
+                    MongoHelper.Database.GetCollection<User>("User").FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
                 }
             }
             else
             {
                 user.Get_DH();
-                id.Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
-                user.Friends.Add(id);
-                UserCollection.FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
+                new_Contact.DH_Key = DiffieH.DiffieHelmannAlgorithm(User1.DH, User2.DH).ToString();
+                user.Friends.Add(new_Contact);
+                MongoHelper.Database.GetCollection<User>("User").FindOneAndReplace(x => (string)x.Nick_Name == ActualUser, user);
             }            
         }
         public UserInformation()

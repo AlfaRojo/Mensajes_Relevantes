@@ -105,24 +105,25 @@ namespace MRDB.Controllers
         }
 
         [HttpGet]
-        public ActionResult Contact(Contact id)
+        public ActionResult Contact(User user)
         {
             UserInformation userInformation = new UserInformation();
 
-            string user_name = HttpContext.Session.GetString("Nick_Name");
-            ViewBag.sessionv = user_name;
-            if ((id.id_Contact != null) && (id.Nick_Name != ViewBag.sessionv))
+            string current_User = HttpContext.Session.GetString("Nick_Name");
+            ViewBag.sessionv = current_User;
+            if (user.Nick_Name != null && user.Name != null)
             {
-                userInformation.GetAllUser();
-                userInformation.SetContactUser(id, (string)ViewBag.sessionv);
+                Contact contact = new Contact { 
+                    id_Contact = Guid.NewGuid().ToString(),
+                    Nick_Name = user.Nick_Name
+                };
+                userInformation.Add_Contact(contact, current_User);
                 return RedirectToAction("Menu", "User");
             }
             else
             {
-                //userInformation.SetContactCollection();
-                //var GetContacts = userInformation.GetAllContacts();
                 Operation operation = new Operation();
-                return View(operation.Get_Contacts(user_name));
+                return View(operation.Get_Contacts(current_User));
             }
         }
 

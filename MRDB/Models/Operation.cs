@@ -48,18 +48,11 @@ namespace MRDB.Models
             var Result = (searchUser.Any<User>()) ? true : false;
             return Result;
         }
+
         public int Find_DH(string nickName)
         {
             MongoHelper.ConnectToMongoService();
-            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
-            var Users = UserCollection.AsQueryable<User>();
-
-            var searchUser = from user in Users
-                             where (string)user.Nick_Name == nickName
-                             select user;
-
-            var DH_Value = searchUser.ToListAsync<User>().Result[0].DH;
-            return DH_Value;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).ToListAsync().Result[0].DH; ;
         }
 
         public FileDB Find_File(string id)
@@ -95,6 +88,12 @@ namespace MRDB.Models
         {
             MongoHelper.ConnectToMongoService();
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name != user_name).ToListAsync().Result;
+        }
+
+        public void Add_Contact(string name, string DH)
+        {
+            MongoHelper.ConnectToMongoService();
+
         }
     }
 }
