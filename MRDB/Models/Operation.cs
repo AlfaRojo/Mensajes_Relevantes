@@ -3,16 +3,13 @@ using System.Linq;
 using Mensajes_Relevantes.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using DiffieHelman;
 using SDES;
-
-
 
 namespace MRDB.Models
 {
     public class Operation
     {
-        public object GenerateObjectId(string key)
+        private object GenerateObjectId(string key)
         {
             var Key = (object)Convert.ChangeType(key, typeof(object));
             return Key;
@@ -23,14 +20,13 @@ namespace MRDB.Models
             Random rnd = new Random();
             MongoHelper.ConnectToMongoService();
             MongoHelper.User_Collection = MongoHelper.Database.GetCollection<User>("User");
-            var Operation = new Operation();
-            Object id = Operation.GenerateObjectId(nickName);
+            Object id = GenerateObjectId(nickName);
             MongoHelper.User_Collection.InsertOneAsync(new User
             {
                 Name = name,
                 Nick_Name = id,
                 Password = password,
-                DH = rnd.Next(15, 200)
+                DH = rnd.Next(100, 800)
             });
         }
 
@@ -63,6 +59,35 @@ namespace MRDB.Models
 
             var DH_Value = searchUser.ToListAsync<User>().Result[0].DH;
             return DH_Value;
+        }
+
+        public FileDB Find_File(string id)
+        {
+            MongoHelper.ConnectToMongoService();
+            var UserCollection = MongoHelper.Database.GetCollection<FileDB>("File");
+            var filesDB = UserCollection.AsQueryable<FileDB>();
+
+            var search_File = from myFile in filesDB
+                             where (string)myFile.id == id
+                             select myFile;
+
+            var this_file = search_File.ToListAsync<FileDB>().Result[0];
+            return this_file;
+        }
+
+        public void Insert_Chat(string text, string date, string fileID, string emisor)
+        {
+            var new_id = Guid.NewGuid().ToString();
+            MongoHelper.ConnectToMongoService();
+            MongoHelper.Message_Collection = MongoHelper.Database.GetCollection<Message>("Chat");
+            MongoHelper.Message_Collection.InsertOneAsync(new Message { 
+                Id_Message = new_id,
+                Text = text,
+                file_ID = fileID,
+                SendDate = date,
+                emisor = emisor
+                
+            });
         }
     }
 }

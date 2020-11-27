@@ -1,6 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace Mensajes_Relevantes.Models
 {
@@ -10,18 +10,20 @@ namespace Mensajes_Relevantes.Models
         [BsonElement("idMessage")]
         public object Id_Message { get; set; }
         
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         [BsonElement("sendDate")]
-        public DateTime SendDate { get; set; }
+        public string SendDate { get; set; }
 
         [BsonElement("text")]
         public string Text { get; set; }
 
-        [BsonElement("fileName")]
-        public string FileName { get; set; }
+        [BsonElement("file_ID")]
+        public string file_ID { get; set; }
 
-        [BsonElement("contentFile")]
-        public bool ContentFile { get; set; }
+        [BsonElement("emisor")]
+        public string emisor { get; set; }
 
-      }
+        [BsonElement("receptor")]
+        public string receptor { get; set; }
+
+    }
 }

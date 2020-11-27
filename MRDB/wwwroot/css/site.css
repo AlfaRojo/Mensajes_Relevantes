@@ -120,6 +120,30 @@ form.Menu2 {
     transform: translateY(25%);
 }
 
+form.Message {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 500px;
+    height: 160px;
+    position: absolute;
+    left: 80%;
+    transform: translateY(248%);
+}
+
+form.Message2 {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 500px;
+    height: 321px;
+    position: absolute;
+    top: 110%;
+    left: 80%;
+    transform: translateY(25%);
+}
+
+=======
 form.Menu3 {
     border: 2px groove white;
     border-radius: 5px;
@@ -143,8 +167,6 @@ form.Menu4 {
     left: 160%;
     transform: translateY(-55%);
 }
-
-
 textarea.ViewInformation {
     background-color: steelblue;
     width: 496px;
@@ -249,3 +271,47 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/*Copied from bootstrap */
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+/*Also */
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+/* This is copied from https://github.com/blueimp/jQuery-File-Upload/blob/master/css/jquery.fileupload.css */
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+    /*Also*/
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        -ms-filter: 'alpha(opacity=0)';
+        font-size: 200px;
+        direction: ltr;
+        cursor: pointer;
+    }

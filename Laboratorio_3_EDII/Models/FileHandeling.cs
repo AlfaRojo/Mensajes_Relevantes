@@ -9,6 +9,7 @@ namespace Laboratorio_3_EDII.Models
 {
     public class FileHandeling
     {
+
         /// <summary>
         /// Create Upload and Compress files
         /// </summary>
@@ -23,45 +24,22 @@ namespace Laboratorio_3_EDII.Models
                 Directory.CreateDirectory($"Compress");
             }
         }
+
         /// <summary>
         /// Create Upload and Decompress files
         /// </summary>
         public void Create_File_Export()
         {
-            if (!Directory.Exists($"Upload"))
+            if (!Directory.Exists($"Download"))
             {
-                Directory.CreateDirectory($"Upload");
+                Directory.CreateDirectory($"Download");
             }
             if (!Directory.Exists($"Decompress"))
             {
                 Directory.CreateDirectory($"Decompress");
             }
         }
-        /// <summary>
-        /// Huffman compress files
-        /// </summary>
-        /// <param name="new_Path"></param>
-        /// <param name="name"></param>
-        public void Compress_Huffman(string new_Path, string name)
-        {
-            using (var new_File = new FileStream(new_Path, FileMode.Open))
-            {
-                CompressHuffman Huffman = new CompressHuffman();
-                Huffman.Compress_File(new_File, name);
-            }
-        }
-        /// <summary>
-        /// Huffman decompress files
-        /// </summary>
-        /// <param name="new_Path"></param>
-        public void Decompress_Huffman(string new_Path)
-        {
-            using (var new_File = new FileStream(new_Path, FileMode.Open))
-            {
-                CompressHuffman Huffman = new CompressHuffman();
-                Huffman.Decompress_File(new_File);
-            }
-        }
+
         /// <summary>
         /// LZW compress files
         /// </summary>
@@ -74,7 +52,9 @@ namespace Laboratorio_3_EDII.Models
                 CompressLZW compressLZW = new CompressLZW();
                 compressLZW.Compress_File(new_File, name);
             }
+            Delete_Files_Upload();
         }
+
         /// <summary>
         /// LZW decompress files
         /// </summary>
@@ -87,44 +67,41 @@ namespace Laboratorio_3_EDII.Models
                 CompressLZW compressLZW = new CompressLZW();
                 compressLZW.Decompress_File(new_File);
             }
+            Delete_Files_Upload();
         }
-        public void Delete_Import(string path)
+        private void Delete_Files_Upload()
         {
-            File.Delete(path);
-        }
-        public string Get_Compress(string type)
-        {
-            var full_path = $"Compress\\Factores de Compresion " + type + ".txt";
-            List<Files> json = new List<Files>();
-            using (StreamReader file = new StreamReader(full_path))
+            DirectoryInfo di = new DirectoryInfo(@"Upload");
+            foreach (FileInfo file in di.GetFiles())
             {
-                string ln;
-                while ((ln = file.ReadLine()) != null)
-                {
-                    Files values = new Files();
-                    values.NombreArchivoOriginal = ln;
-                    ln = file.ReadLine();
-                    values.RutaArchivoComprimido = ln;
-                    ln = file.ReadLine();
-                    values.RazonCompresion = Convert.ToDouble(ln);
-                    ln = file.ReadLine();
-                    values.FactorCompresion = Convert.ToDouble(ln);
-                    ln = file.ReadLine();
-                    values.PorcentajeReduccion = ln;
-                    ln = file.ReadLine();
-                    values.FormatoCompresion = ln;
-                    json.Add(values);
-                }
+                file.Delete();
             }
-
-            var options = new JsonSerializerOptions
+            foreach (DirectoryInfo dir in di.GetDirectories())
             {
-                WriteIndented = true,
-            };
-            string jsonString;
-            jsonString = System.Text.Json.JsonSerializer.Serialize(json, options);
-            return jsonString;
+                dir.Delete(true);
+            }
+            if (Directory.Exists(@"Upload"))
+            {
+                Directory.Delete(@"Upload");
+            }
         }
+        public void Delete_Files_Compress()
+        {
+            DirectoryInfo di = new DirectoryInfo(@"Compress");
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+            if (Directory.Exists(@"Compress"))
+            {
+                Directory.Delete(@"Compress");
+            }
+        }
+
         public string Get_Name(string type, string compressName)
         {
             var full_path = $"Compress\\Factores de Compresion " + type + ".txt";

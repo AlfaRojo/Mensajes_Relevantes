@@ -42,8 +42,6 @@ namespace SDES
                     {
                         password += Convert.ToChar(item);
                     }
-
-                    
                 } 
             }
             return password;

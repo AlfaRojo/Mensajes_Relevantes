@@ -8,10 +8,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils" Version="3.1.4" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DiffieHelman\DiffieHelman.csproj" />
+    <ProjectReference Include="..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj" />
     <ProjectReference Include="..\Mensajes_Relevantes\Mensajes_Relevantes.csproj" />
     <ProjectReference Include="..\SDES\SDES.csproj" />
   </ItemGroup>

@@ -1,27 +1,39 @@
-﻿@model Mensajes_Relevantes.Models.Connection
+﻿@model Mensajes_Relevantes.Models.Message
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Message";
 }
+
+<p>User conneting: @ViewBag.sessionv</p>
 
 <h1>Message</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form class="Login" asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@using (Html.BeginForm("Message", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+
             <div class="form-group">
+                <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
+            </div>
+            <div class="form-group">
+                <input placeholder="Write" asp-for="Text" class="Write" name="message.Text"/>
                 <label asp-for="Text" class="control-label"></label>
                 <input asp-for="Text" class="form-control" />
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
+                <input type="file" value="Select File" name="file">
             </div>
-            <div>
-                <a href="/User/Login">Cerrar Sesión</a>
+            <div class="form-group">
+                <input type="submit" value="Send" class="SendButton" name="notsubmit" />
             </div>
-        </form>
+
+        </div>
     </div>
+}
+
+<div>
+    <a href="/User/Login">Cerrar Sesión</a>
 </div>
+

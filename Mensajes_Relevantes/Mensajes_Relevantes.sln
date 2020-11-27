@@ -7,18 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mensajes_Relevantes", "Mens
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRDB", "..\MRDB\MRDB.csproj", "{5CB3777A-57C2-4AAE-B3D0-DAD62DEAB393}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB71D243-022F-4C6A-B4EE-42F7DC65AF47}"
-	ProjectSection(SolutionItems) = preProject
-		Message.json = Message.json
-		Prueba.json = Prueba.json
-		Prueba.txt = Prueba.txt
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiffieHelman", "..\DiffieHelman\DiffieHelman.csproj", "{2256F2EA-9DA7-4A27-9247-9A49E71D76C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDES", "..\SDES\SDES.csproj", "{565D7578-E60D-4C62-9849-05405A59B012}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_SDES", "..\Console_SDES\Console_SDES.csproj", "{96067AAA-F2CE-4283-B4AF-173B4A0BD0A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laboratorio_3_EDII", "..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj", "{E804CE03-DB23-4EA7-AC8D-38D6B08A3954}"
 EndProject
@@ -44,10 +35,6 @@ Global
 		{565D7578-E60D-4C62-9849-05405A59B012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565D7578-E60D-4C62-9849-05405A59B012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565D7578-E60D-4C62-9849-05405A59B012}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96067AAA-F2CE-4283-B4AF-173B4A0BD0A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96067AAA-F2CE-4283-B4AF-173B4A0BD0A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96067AAA-F2CE-4283-B4AF-173B4A0BD0A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96067AAA-F2CE-4283-B4AF-173B4A0BD0A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E804CE03-DB23-4EA7-AC8D-38D6B08A3954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E804CE03-DB23-4EA7-AC8D-38D6B08A3954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E804CE03-DB23-4EA7-AC8D-38D6B08A3954}.Release|Any CPU.ActiveCfg = Release|Any CPU
