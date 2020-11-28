@@ -82,8 +82,20 @@ namespace MRDB.Models
         public int Get_DH_Group(string emisor, string receptor)
         {
             MongoHelper.ConnectToMongoService();
-            var myContact = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).ToListAsync().Result[0].Friends[0].DH_Key;
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).ToListAsync().Result[0].Friends[0].DH_Key;
+        }
+
+        public Message Get_Individual(string msg)
+        {
+            MongoHelper.ConnectToMongoService();
+            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == msg).ToListAsync().Result[0];
+            Message message = new Message
+            {
+                Text = res.Text,
+                emisor = res.emisor,
+                receptor = res.receptor
+            };
+            return message;
         }
     }
 }

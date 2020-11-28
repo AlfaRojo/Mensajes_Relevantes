@@ -10,36 +10,22 @@
 
 @using (Html.BeginForm("Message", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="container">
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <p style="color:white" class="col-2">User</p>
-            <div class="col-4">
-                <input id="userInput" name="message.emisor" value="@ViewBag.sessionv" disabled="disabled"/>
-            </div>
-        </div>
-        <div class="row">
-            <p style="color:white" class="col-2">Message</p>
-            <div class="col-4"><input type="text" id="messageInput" name="message.Text"/></div>
-        </div>
-        <div class="row">
-            <input style="color:white" type="file" value="Select File" name="file">
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-6">
-                <input type="button" id="sendButton" value="Send Message" />
-            </div>
-        </div>
-    </div>
     <div class="row">
-        <div class="col-12">
-            <hr />
-        </div>
-    </div>
-    <div class="row">
-        <div class="Message">
-            <p style="color:white" id="messagesList"></p>
+        <div class="col-md-4">
+
+            <div class="form-group">
+                <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label">  <input placeholder="Write" asp-for="Text" class="Write" name="message.Text" /> </label>
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="file" value="Select File" name="file">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="SendButton" name="notsubmit" />
+            </div>
         </div>
     </div>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
@@ -50,5 +36,3 @@
 <div>
     <a href="/User/Login">Cerrar Sesión</a>
 </div>
-
-

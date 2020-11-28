@@ -143,5 +143,17 @@ namespace MRDB.Controllers
         {
             return RedirectToAction("Menu", "User");
         }
+
+        public ActionResult Get_Msg()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Get_Msg(string message)
+        {
+            Operation operation = new Operation();
+            return View(operation.Get_Individual(message));
+        }
     }
 }
