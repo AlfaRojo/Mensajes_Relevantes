@@ -3,7 +3,6 @@ using Mensajes_Relevantes.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
-using DiffieHelman;
 using SDES;
 using System.Threading.Tasks;
 
@@ -20,10 +19,11 @@ namespace MRDB.Controllers
         [HttpPost]
         public async Task<ActionResult> Message(Message message, IFormFile file)
         {
-            string id_file = string.Empty;
+            byte[] file_Cont = { };
             string text = string.Empty;
-            if (text == null && id_file == null)
+            if (text.Equals("") && file_Cont != null)
             {
+                ViewBag.sessionv = message.emisor;
                 return View();
             }
             Operation operation = new Operation();
@@ -33,7 +33,7 @@ namespace MRDB.Controllers
             if (file != null)
             {
                 Import import = new Import();
-                id_file = await import.Upload_FileAsync(file);
+                file_Cont = await import.Upload_FileAsync(file);
             }
             if (message.Text != null)
             {
@@ -41,7 +41,11 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
             }
-            operation.Insert_Chat(text, message.SendDate, id_file, message.emisor);
+            operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, file.FileName);
+            Message new_Message = new Message
+            {
+                Text = message.Text
+            };
             ViewBag.sessionv = message.emisor;
             return View();
         }
@@ -130,7 +134,7 @@ namespace MRDB.Controllers
         }
 
         [HttpPost]
-        public ActionResult ContactI(Contact contact)
+        public ActionResult Contact(Contact contact)
         {
             return RedirectToAction("Menu", "User");
         }

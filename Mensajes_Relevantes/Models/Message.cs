@@ -16,8 +16,12 @@ namespace Mensajes_Relevantes.Models
         [BsonElement("text")]
         public string Text { get; set; }
 
-        [BsonElement("file_ID")]
-        public string file_ID { get; set; }
+
+        [BsonElement("file_Name")]
+        public string file_Name { get; set; }
+
+        [BsonElement("file_Content")]
+        public byte[] file_Content { get; set; }
 
         [BsonElement("emisor")]
         public string emisor { get; set; }

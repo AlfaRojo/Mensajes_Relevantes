@@ -18,7 +18,6 @@ namespace MRDB.Models
         public static IMongoCollection<Chat> Chat_Collection { get; set; }
         public static IMongoCollection<History> History_Collection { get; set; }
         public static IMongoCollection<Message> Message_Collection { get; set; }
-        public static IMongoCollection<FileDB> File_DB { get; set; }
 
         internal static void ConnectToMongoService()
         {

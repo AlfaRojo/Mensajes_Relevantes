@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Laboratorio_3_EDII.Models;
-using System;
 
 namespace MRDB.Models
 {
@@ -25,7 +24,7 @@ namespace MRDB.Models
             return new_Path;
         }
 
-        public async Task<string> Upload_FileAsync(IFormFile formFile)
+        public async Task<byte[]> Upload_FileAsync(IFormFile formFile)
         {
             FileHandeling files = new FileHandeling();
             files.Create_File_Import();
@@ -35,19 +34,9 @@ namespace MRDB.Models
             var full_Name = Path.GetFileNameWithoutExtension(formFile.FileName) + ".lzw";
             var path = Path.Combine($"Compress", full_Name);
 
-
-            MongoHelper.ConnectToMongoService();
-            MongoHelper.File_DB = MongoHelper.Database.GetCollection<FileDB>("Files");
             byte[] all_File = File.ReadAllBytes(path);
-            var new_id = Guid.NewGuid().ToString();
-            await MongoHelper.File_DB.InsertOneAsync(new FileDB
-            {
-                id = new_id,
-                content = all_File,
-                name = full_Name
-            });
             files.Delete_Files_Compress();
-            return new_id;
+            return all_File;
         }
 
     }

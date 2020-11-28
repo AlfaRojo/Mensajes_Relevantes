@@ -57,21 +57,7 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).ToListAsync().Result[0].DH; ;
         }
 
-        public FileDB Find_File(string id)
-        {
-            MongoHelper.ConnectToMongoService();
-            var UserCollection = MongoHelper.Database.GetCollection<FileDB>("File");
-            var filesDB = UserCollection.AsQueryable<FileDB>();
-
-            var search_File = from myFile in filesDB
-                              where (string)myFile.id == id
-                              select myFile;
-
-            var this_file = search_File.ToListAsync<FileDB>().Result[0];
-            return this_file;
-        }
-
-        public void Insert_Chat(string text, string date, string fileID, string emisor)
+        public void Insert_Chat(string text, string date, string emisor, byte[] file_Cont, string fileName)
         {
             var new_id = Guid.NewGuid().ToString();
             MongoHelper.ConnectToMongoService();
@@ -80,10 +66,10 @@ namespace MRDB.Models
             {
                 Id_Message = new_id,
                 Text = text,
-                file_ID = fileID,
                 SendDate = date,
-                emisor = emisor
-
+                emisor = emisor,
+                file_Content = file_Cont,
+                file_Name = fileName
             });
         }
 
