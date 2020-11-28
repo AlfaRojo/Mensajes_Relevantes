@@ -54,7 +54,7 @@ namespace MRDB.Models
         public int Find_DH(string nickName)
         {
             MongoHelper.ConnectToMongoService();
-            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).ToListAsync().Result[0].DH; ;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).FirstOrDefault().DH; ;
         }
 
         public void Insert_Chat(string text, string date, string emisor, byte[] file_Cont, string fileName)
@@ -82,13 +82,13 @@ namespace MRDB.Models
         public int Get_DH_Group(string emisor, string receptor)
         {
             MongoHelper.ConnectToMongoService();
-            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).ToListAsync().Result[0].Friends[0].DH_Key;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;
         }
 
         public Message Get_Individual(string msg)
         {
             MongoHelper.ConnectToMongoService();
-            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == msg).ToListAsync().Result[0];
+            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == msg).FirstOrDefault();
             Message message = new Message
             {
                 Text = res.Text,

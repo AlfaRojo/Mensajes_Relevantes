@@ -51,8 +51,8 @@ namespace MRDB.Models
         public void Add_Contact(Contact new_Contact, string ActualUser)
         {
             MongoHelper.ConnectToMongoService();
-            var User1 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == ActualUser).ToListAsync().Result[0];
-            var User2 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == new_Contact.Nick_Name).ToListAsync().Result[0];
+            var User1 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == ActualUser).FirstOrDefault();
+            var User2 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == new_Contact.Nick_Name).FirstOrDefault();
             var user = User1;
             if (user.Friends.Count > 0)
             {
@@ -75,8 +75,8 @@ namespace MRDB.Models
         private void other_Contact(Contact new_Contact, string ActualUser)
         {
             MongoHelper.ConnectToMongoService();
-            var User1 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == ActualUser).ToListAsync().Result[0];
-            var User2 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == new_Contact.Nick_Name).ToListAsync().Result[0];
+            var User1 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == ActualUser).FirstOrDefault();
+            var User2 = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == new_Contact.Nick_Name).FirstOrDefault();
             var user = User1;
             if (user.Friends.Count > 0)
             {

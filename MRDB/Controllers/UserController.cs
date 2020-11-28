@@ -48,8 +48,7 @@ namespace MRDB.Controllers
                 text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
                 operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, "");
             }
-            ChatHub chatHub = new ChatHub();
-            await chatHub.SendMessage(message.emisor, message.Text);
+            await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
 
             ViewBag.sessionv = message.emisor;
             return View();
@@ -90,8 +89,8 @@ namespace MRDB.Controllers
             {
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-
-                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], Convert.ToString(Operation.Find_DH(collection["Nick_Name"]), 2)));
+                var pass = Convert.ToString(Operation.Find_DH(collection["Nick_Name"]), 2);
+                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], pass ));
                 if (result)
                 {
                     Connection connection = new Connection();
