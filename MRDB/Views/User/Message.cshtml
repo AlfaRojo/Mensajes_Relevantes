@@ -10,21 +10,32 @@
 
 @using (Html.BeginForm("Message", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="row">
-        <div class="col-md-4">
-
-            <div class="form-group">
-                <textarea readonly rows="13" asp-for="Text" class="ViewInformation"></textarea>
+    <div class="container">
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">User</div>
+            <div class="col-4">
+                <input type="text" id="userInput" />
             </div>
-            <div class="form-group">
-                <label asp-for="Text" class="control-label">  <input placeholder="Write" asp-for="Text" class="Write" name="message.Text" /> </label>
-                <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-2">Message</div>
+            <div class="col-4"><input type="text" id="messageInput" /></div>
+        </div>
+        <div class="row">
+            <input type="file" value="Select File" name="file">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Send" class="SendButton" name="notsubmit" />
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr />
             </div>
-            <div class="form-group">
-                <input type="file" value="Select File" name="file">
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Send" class="SendButton" name="notsubmit" />
+        </div>
+        <div class="row">
+            <div class="Message">
+                <p style="color:white" id="messagesList"></p>
             </div>
         </div>
     </div>
