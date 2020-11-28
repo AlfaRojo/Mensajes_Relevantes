@@ -152,8 +152,8 @@ form.Menu3 {
     height: 321px;
     position: absolute;
     top: 110%;
-    left: 56%;
-    transform: translateY(-55%);
+    left: 105%;
+    transform: translateY(-99%);
 }
 
 form.Menu4 {
@@ -164,9 +164,23 @@ form.Menu4 {
     height: 321px;
     position: absolute;
     top: 110%;
-    left: 160%;
-    transform: translateY(-55%);
+    left: 220%;
+    transform: translateY(-99%);
 }
+
+form.Menu5 {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 50px;
+    width: 341px;
+    height: 321px;
+    position: absolute;
+    top: 110%;
+    left: -5%;
+    transform: translateY(-99%);
+}
+
+
 textarea.ViewInformation {
     background-color: steelblue;
     width: 496px;
@@ -174,12 +188,12 @@ textarea.ViewInformation {
 }
 
 img.image {
-    transform: translate(140%,120%);
+    transform: translate(280%,120%);
     width: 40%;
 }
 
 img.image2 {
-    transform: translate(420%,21%);
+    transform: translate(585%,21%);
     width: 40%;
 }
 
@@ -193,6 +207,12 @@ img.image4 {
     width: 90%;
     mix-blend-mode: color-burn;
 }
+
+img.image5 {
+    transform: translate(-30%,-70%);
+    width: 40%;
+}
+
 
 table.table {
     font-variant-caps: all-petite-caps;
