@@ -5,12 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
 using SDES;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MRDB.Controllers
 {
     public class UserController : Controller
     {
-
+        private readonly IHubContext<ChatHub> chatHub;
+        public UserController(IHubContext<ChatHub> hubContext)
+        {
+            this.chatHub = hubContext;
+        }
         public ActionResult Message()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
@@ -20,8 +25,8 @@ namespace MRDB.Controllers
         public async Task<ActionResult> Message(Message message, IFormFile file)
         {
             byte[] file_Cont = { };
-            string text = string.Empty;
-            if (text.Equals("") && file_Cont != null)
+            string text = message.Text;
+            if (text.Equals(null) && file_Cont != null)
             {
                 ViewBag.sessionv = message.emisor;
                 return View();
@@ -34,18 +39,18 @@ namespace MRDB.Controllers
             {
                 Import import = new Import();
                 file_Cont = await import.Upload_FileAsync(file);
+                operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, file.FileName);
             }
             if (message.Text != null)
             {
                 var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
+                operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, "");
             }
-            operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, file.FileName);
-            Message new_Message = new Message
-            {
-                Text = message.Text
-            };
+            ChatHub chatHub = new ChatHub();
+            await chatHub.SendMessage(message.emisor, message.Text);
+
             ViewBag.sessionv = message.emisor;
             return View();
         }

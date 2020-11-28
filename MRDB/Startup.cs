@@ -21,7 +21,7 @@ namespace MRDB
             services.AddControllersWithViews();
             services.AddMemoryCache();
             services.AddSession();
-
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,14 +44,15 @@ namespace MRDB
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
-            
         }
     }
 }
