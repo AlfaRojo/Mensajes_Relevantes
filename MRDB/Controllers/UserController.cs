@@ -25,6 +25,13 @@ namespace MRDB.Controllers
         [HttpPost]
         public async Task<ActionResult> Message(Message message, IFormFile file)
         {
+            ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name"); 
+            Operation operation = new Operation();
+            var user_Info = operation.Get_User_Info(message.emisor);
+            if (user_Info.Friends.Count().Equals(0))
+            {
+                return View();
+            }
             byte[] file_Cont = { };
             string text = message.Text;
             if (text == null && file_Cont != null)
@@ -32,7 +39,6 @@ namespace MRDB.Controllers
                 ViewBag.sessionv = message.emisor;
                 return View();
             }
-            Operation operation = new Operation();
             var date = DateTime.Today;
             message.SendDate = date.ToShortDateString();
             message.emisor = HttpContext.Session.GetString("Nick_Name");
@@ -51,7 +57,6 @@ namespace MRDB.Controllers
             }
             await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
 
-            ViewBag.sessionv = message.emisor;
             return View();
         }
 
@@ -89,7 +94,7 @@ namespace MRDB.Controllers
             {
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-                var user = Operation.Find_DH(collection["Nick_Name"]);
+                var user = Operation.Get_User_Info(collection["Nick_Name"]);
                 if (user == null)
                 {
                     return View();

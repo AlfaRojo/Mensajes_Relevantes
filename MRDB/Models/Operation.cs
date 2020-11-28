@@ -51,7 +51,7 @@ namespace MRDB.Models
             return Result;
         }
 
-        public User Find_DH(string nickName)
+        public User Get_User_Info(string nickName)
         {
             MongoHelper.ConnectToMongoService();
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).FirstOrDefault();
