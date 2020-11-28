@@ -6,6 +6,7 @@ using MRDB.Models;
 using SDES;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 
 namespace MRDB.Controllers
 {
@@ -26,7 +27,7 @@ namespace MRDB.Controllers
         {
             byte[] file_Cont = { };
             string text = message.Text;
-            if (text.Equals(null) && file_Cont != null)
+            if (text == null && file_Cont != null)
             {
                 ViewBag.sessionv = message.emisor;
                 return View();
@@ -66,7 +67,6 @@ namespace MRDB.Controllers
         {
             try
             {
-
                 var Operation = new Operation();
                 Operation.CreateUser(collection["name"], collection["Nick_Name"], collection["password"]);
                 return RedirectToAction("Login");
@@ -89,7 +89,12 @@ namespace MRDB.Controllers
             {
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 var Operation = new Operation();
-                var pass = Convert.ToString(Operation.Find_DH(collection["Nick_Name"]), 2);
+                var user = Operation.Find_DH(collection["Nick_Name"]);
+                if (user == null)
+                {
+                    return View();
+                }
+                var pass = Convert.ToString(user.DH, 2);
                 var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], pass ));
                 if (result)
                 {

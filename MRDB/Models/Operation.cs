@@ -51,10 +51,10 @@ namespace MRDB.Models
             return Result;
         }
 
-        public int Find_DH(string nickName)
+        public User Find_DH(string nickName)
         {
             MongoHelper.ConnectToMongoService();
-            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).FirstOrDefault().DH; ;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).FirstOrDefault();
         }
 
         public void Insert_Chat(string text, string date, string emisor, byte[] file_Cont, string fileName)
