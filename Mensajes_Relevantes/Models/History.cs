@@ -17,16 +17,12 @@ namespace Mensajes_Relevantes.Models
         [BsonElement("receptor")]
         public string Receptor { get; set; }
 
-        [BsonElement("Sent")]
-        public List<Message> Sent;
-
-        [BsonElement("Recived")]
-        public List<Message> Received;
+        [BsonElement("Chat")]
+        public List<Message> Chat;
 
         public History()
         {
-            Sent = new List<Message>();
-            Received = new List<Message>();
+            Chat = new List<Message>();
         }
 
     }

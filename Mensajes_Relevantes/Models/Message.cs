@@ -29,5 +29,8 @@ namespace Mensajes_Relevantes.Models
         [BsonElement("receptor")]
         public string receptor { get; set; }
 
+        [BsonElement("Accíón")]
+        public string Action { get; set; }
+
     }
 }
