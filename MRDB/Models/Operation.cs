@@ -83,17 +83,40 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;
         }
 
-        public Message Get_Individual(string msg, string current_user)
+        public List<Message> Get_Individual(string msg, string current_user)
         {
-            Message message = new Message();
+            List<Message> messages = new List<Message>();
             MongoHelper.ConnectToMongoService();
-            var res = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == current_user).FirstOrDefault();
-            if (res != null)
+            var user_Info = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == current_user).FirstOrDefault();
+            if (user_Info != null)
             {
-
-                return message;
+                var cant_Friend = user_Info.Friends.Count();
+                for (int i = 0; i < cant_Friend; i++)
+                {
+                    var cypher_msg = get_Cypher_Message(user_Info.Friends[i].DH_Key, msg);
+                    var message_Cyper = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == cypher_msg).FirstOrDefault();
+                    if (message_Cyper != null)
+                    {
+                        EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+                        var decrypted = encryptDecrypt.Decrypt(msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
+                        Message message = new Message { 
+                            Text = decrypted,
+                            emisor = message_Cyper.emisor,
+                            receptor = message_Cyper.receptor,
+                            SendDate = message_Cyper.SendDate
+                        };
+                        messages.Add(message);
+                    }
+                }
+                return messages;
             }
-            return message;
+            return messages;
+        }
+        private string get_Cypher_Message(int DH, string msg)
+        {
+            EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+            var cypher = encryptDecrypt.Encrypt(msg, Convert.ToString(DH, 2));
+            return cypher;
         }
     }
 }
