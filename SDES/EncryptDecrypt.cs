@@ -92,8 +92,6 @@ namespace SDES
                     {
                         password += Convert.ToChar(item);
                     }
-
-                    password += Encoding.Default.GetString(output);
                 }
             }
             return password;

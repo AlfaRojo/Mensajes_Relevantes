@@ -46,7 +46,6 @@ namespace MRDB.Models
 
             Data.Instance.user = searchUser.ToListAsync<User>().Result[0];
             EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-            var ORIGINAL = encryptDecrypt.Decrypt(Data.Instance.user.Password, "0110100101");
             var Result = (searchUser.Any<User>()) ? true : false;
             return Result;
         }
@@ -98,7 +97,7 @@ namespace MRDB.Models
                     if (message_Cyper != null)
                     {
                         EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-                        var decrypted = encryptDecrypt.Decrypt(msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
+                        var decrypted = encryptDecrypt.Decrypt(cypher_msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
                         Message message = new Message { 
                             Text = decrypted,
                             emisor = message_Cyper.emisor,
