@@ -87,15 +87,10 @@ namespace MRDB.Models
         {
             Message message = new Message();
             MongoHelper.ConnectToMongoService();
-            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.emisor == current_user).FirstOrDefault();
+            var res = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == current_user).FirstOrDefault();
             if (res != null)
             {
-                message = new Message
-                {
-                    Text = res.Text,
-                    emisor = res.emisor,
-                    receptor = res.receptor
-                };
+
                 return message;
             }
             return message;
