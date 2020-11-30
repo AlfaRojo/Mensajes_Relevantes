@@ -76,10 +76,18 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name != user_name).ToListAsync().Result;
         }
 
+        //Modifique
         public int Get_DH_Group(string emisor, string receptor)
         {
             MongoHelper.ConnectToMongoService();
-            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;//Solo obtiene el primer amigo
+            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
+            var User = UserCollection.Find(x => (string)x.Nick_Name == emisor).ToList();//Solo obtiene el primer amigo
+            var Dh_Value = 0;
+            foreach (var item in User)
+            {
+                Dh_Value = item.DH;
+            }
+            return Dh_Value;
         }
 
         public List<Message> Get_Messages(string msg, string current_user)

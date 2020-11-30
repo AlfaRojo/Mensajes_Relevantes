@@ -12,11 +12,10 @@ namespace MRDB.Models
         public static string MongoConnection = "mongodb+srv://EbGue:7vkLmhPq9X3@newclouster.rbdey.mongodb.net/test?authSource=admin&replicaSet=atlas-rbpzt0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true";
         public static string MongoDataBase = "MRDB";
 
-
         public static IMongoCollection<User> User_Collection { get; set; }
         public static IMongoCollection<Contact> Contact_Collection { get; set; }
         public static IMongoCollection<Message> Message_Collection { get; set; }
-
+        public static IMongoCollection<History> History_Collection { get; set; }
         internal static void ConnectToMongoService()
         {
             try
