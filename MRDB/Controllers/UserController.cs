@@ -12,6 +12,7 @@ namespace MRDB.Controllers
 {
     public class UserController : Controller
     {
+        //Completo
         #region Login
 
         public ActionResult LoginAsync()
@@ -50,6 +51,7 @@ namespace MRDB.Controllers
 
         #endregion
 
+        //Completo
         #region Create
         public ActionResult Create()
         {
@@ -72,6 +74,7 @@ namespace MRDB.Controllers
 
         #endregion
 
+        //Completo
         #region Contact
         [HttpGet]
         public ActionResult Contact(User user)
@@ -186,23 +189,23 @@ namespace MRDB.Controllers
         public ActionResult Get_Msg(string message)
         {
             Operation operation = new Operation();
-            string current_User = HttpContext.Session.GetString("Nick_Name");
-            var all_msg = operation.Get_Messages(message, current_User);
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            var all_msg = operation.Get_Messages(message, ViewBag.sessionv);
             return View(all_msg);
         }
 
         [HttpGet]
         public ActionResult ToSend(User emisor)
         {
-            string current_user = HttpContext.Session.GetString("Nick_Name");
+             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             if (emisor.Nick_Name != null)
             {
                 return RedirectToAction("Message", "User", emisor);
             }
-            if (current_user != null)
+            if (ViewBag.sessionv != null)
             {
                 Operation operation = new Operation();
-                var friends = operation.Get_Friends(current_user);
+                var friends = operation.Get_Friends(ViewBag.sessionv);
                 return View(friends);
             }
             return RedirectToAction("LoginAsync", "User");
@@ -211,6 +214,7 @@ namespace MRDB.Controllers
         [HttpPost]
         public ActionResult ToSend()
         {
+
             return View();
         }
 
