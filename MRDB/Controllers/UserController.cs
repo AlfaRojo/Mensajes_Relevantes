@@ -18,9 +18,10 @@ namespace MRDB.Controllers
             this.chatHub = hubContext;
         }
 
-        public ActionResult Message()
+        public ActionResult Message(User receptor)
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            ViewBag.receptor = receptor.Nick_Name;
             return View();
         }
         [HttpPost]
@@ -137,7 +138,7 @@ namespace MRDB.Controllers
         }
 
         [HttpPost]
-        public ActionResult Contact(Contact contact)
+        public ActionResult Contact()
         {
             return RedirectToAction("Menu", "User");
         }
@@ -156,9 +157,13 @@ namespace MRDB.Controllers
         }
 
         [HttpGet]
-        public ActionResult ToSend(string emisor)
+        public ActionResult ToSend(User emisor)
         {
             string current_user = HttpContext.Session.GetString("Nick_Name");
+            if (emisor.Nick_Name != null)
+            {
+                return RedirectToAction("Message", "User", emisor);
+            }
             if (current_user != null)
             {
                 Operation operation = new Operation();
@@ -171,7 +176,6 @@ namespace MRDB.Controllers
         [HttpPost]
         public ActionResult ToSend()
         {
-
             return View();
         }
 

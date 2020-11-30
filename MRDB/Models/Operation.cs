@@ -122,7 +122,6 @@ namespace MRDB.Models
         {
             MongoHelper.ConnectToMongoService();
             var friends = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == current_user).FirstOrDefault();
-
             return friends.Friends;
         }
     }
