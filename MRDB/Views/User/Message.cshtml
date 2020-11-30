@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Message";
+    string Emisor = (string)ViewBag.emisor;
+    string Receptor = (string)ViewBag.receptor;
 }
 
 <p>User conneting: @ViewBag.sessionv</p>
@@ -10,39 +12,55 @@
 
 @using (Html.BeginForm("Message", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="container">
-        <div class="row">&nbsp;</div>
+<div class="container">
+    <div class="row">&nbsp;</div>
+    @if (Receptor != null)
+    {
         <div class="row">
             <div class="col-2" style="color:white">Emisor</div>
             <div class="col-4">
-                <input type="text" value="@ViewBag.sessionv" name="message.emisor" disabled="disabled" id="userInput"/>
+                <input type="text" value="@ViewBag.sessionv" name="message.emisor"  disabled="disabled" id="userInput" />
             </div>
             <div class="col-2" style="color:white">Receptor</div>
             <div class="col-4">
-                <input type="text" value="@ViewBag.receptor" name="message.receptor" disabled="disabled"/>
+                <input type="text" value="@ViewBag.receptor" name="message.receptor"  inputmode="@Emisor" />
             </div>
         </div>
+    }
+    else
+    {
         <div class="row">
-            <div style="color:white" class="col-2">Message</div>
-            <div class="col-4"><input type="text" id="messageInput" name="message.Text"/></div>
-        </div>
-        <div class="row" style="color:white">
-            <input type="file" value="Select File" name="file">
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Send" class="sendButton" name="notsubmit" /> @*Agregar id="sendButton" si se desea probar signalR*@
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <hr />
+            <div class="col-2" style="color:white">Emisor</div>
+            <div class="col-4">
+                <input type="text" value="@Emisor" name="message.emisor" disabled="disabled"  id="userInput" />
+            </div>
+            <div class="col-2" style="color:white">Receptor</div>
+            <div class="col-4">
+                <input type="text" placeholder="Write friend name" name="message.receptor" />
             </div>
         </div>
-        <div class="row">
-            <div class="Message">
-                <p style="color:white" id="messagesList"></p>
-            </div>
+    }
+    <div class="row">
+        <div style="color:white" class="col-2">Message</div>
+        <div class="col-4"><input type="text" id="messageInput" name="message.Text" /></div>
+    </div>
+    <div class="row" style="color:white">
+        <input type="file" value="Select File" name="file">
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Send" class="sendButton" name="notsubmit" /> @*Agregar id="sendButton" si se desea probar signalR*@
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
         </div>
     </div>
+    <div class="row">
+        <div class="Message">
+            <p style="color:white" id="messagesList"></p>
+        </div>
+    </div>
+</div>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js"></script>
 }

@@ -56,7 +56,7 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == nickName).FirstOrDefault();
         }
 
-        public void Insert_Chat(string text, string date, string emisor, byte[] file_Cont, string fileName)
+        public void Insert_Chat(string text, string date, string emisor, string receptor, byte[] file_Cont, string fileName)
         {
             MongoHelper.ConnectToMongoService();
             MongoHelper.Message_Collection = MongoHelper.Database.GetCollection<Message>("Chat");
@@ -65,6 +65,7 @@ namespace MRDB.Models
                 Text = text,
                 SendDate = date,
                 emisor = emisor,
+                receptor = receptor,
                 file_Content = file_Cont,
                 file_Name = fileName
             });

@@ -12,74 +12,7 @@ namespace MRDB.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IHubContext<ChatHub> chatHub;
-        public UserController(IHubContext<ChatHub> hubContext)
-        {
-            this.chatHub = hubContext;
-        }
-
-        public ActionResult Message(User receptor)
-        {
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            ViewBag.receptor = receptor.Nick_Name;
-            return View();
-        }
-        [HttpPost]
-        public async Task<ActionResult> Message(Message message, IFormFile file)
-        {
-            ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name");
-            Operation operation = new Operation();
-            var user_Info = operation.Get_User_Info(message.emisor);
-            if (user_Info.Friends.Count().Equals(0))
-            {
-                return View();
-            }
-            byte[] file_Cont = { };
-            string text = message.Text;
-            if (text == null && file_Cont != null)
-            {
-                ViewBag.sessionv = message.emisor;
-                return View();
-            }
-            var date = DateTime.Today;
-            message.SendDate = date.ToShortDateString();
-            message.emisor = HttpContext.Session.GetString("Nick_Name");
-            if (file != null)
-            {
-                Import import = new Import();
-                file_Cont = await import.Upload_FileAsync(file);
-                operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, file.FileName);
-            }
-            if (message.Text != null)
-            {
-                var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
-                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-                text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
-                operation.Insert_Chat(text, message.SendDate, message.emisor, file_Cont, "");
-            }
-            await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
-
-            return View();
-        }
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                var Operation = new Operation();
-                Operation.CreateUser(collection["name"], collection["Nick_Name"], collection["password"]);
-                return RedirectToAction("Login");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        #region Login
 
         public ActionResult LoginAsync()
         {
@@ -115,6 +48,31 @@ namespace MRDB.Controllers
 
         }
 
+        #endregion
+
+        #region Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                var Operation = new Operation();
+                Operation.CreateUser(collection["name"], collection["Nick_Name"], collection["password"]);
+                return RedirectToAction("Login");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        #endregion
+
+        #region Contact
         [HttpGet]
         public ActionResult Contact(User user)
         {
@@ -141,6 +99,83 @@ namespace MRDB.Controllers
         public ActionResult Contact()
         {
             return RedirectToAction("Menu", "User");
+        }
+
+        #endregion
+
+        //Corregir
+        #region Hub
+        private readonly IHubContext<ChatHub> chatHub;
+        public UserController(IHubContext<ChatHub> hubContext)
+        {
+            this.chatHub = hubContext;
+        }
+
+        #endregion
+       
+        //Corregir
+        #region Message
+
+        public ActionResult Message(User receptor)
+        {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            if (receptor.Nick_Name == null)
+            {
+                ViewBag.emisor = ViewBag.sessionV;
+                return View();
+            }
+            else
+            {
+                ViewBag.emisor = ViewBag.sessionV;
+                ViewBag.receptor = receptor.Nick_Name;
+                var message = new Message();
+                message.emisor = (string)ViewBag.emisor;
+                message.receptor = (string)(ViewBag).receptor;
+                return View(message);
+            }     
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Message(Message message, IFormFile file)
+        {
+            
+            ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name");
+            var information = new UserInformation();
+            var operation = new Operation();
+            var user_Info = operation.Get_User_Info(message.emisor);
+            if (user_Info.Friends.Count().Equals(0))
+            {
+                return View();
+            }
+            byte[] file_Cont = { };
+            string text = message.Text;
+            if (text == null && file_Cont != null)
+            {
+                ViewBag.sessionv = message.emisor;
+                return View();
+            }
+            var date = DateTime.Today;
+            message.SendDate = date.ToShortDateString();
+            message.emisor = HttpContext.Session.GetString("Nick_Name");
+            if (file != null)
+            {
+                Import import = new Import();
+                file_Cont = await import.Upload_FileAsync(file);
+                operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor , file_Cont, file.FileName);
+                information.SetHistoryCollection(message.emisor, message.receptor, message);
+            }
+            if (message.Text != null)
+            {
+                var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
+                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+                text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
+                operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor, file_Cont, "");
+                information.SetHistoryCollection(message.emisor, message.receptor, message);
+
+            }
+            await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
+
+            return RedirectToAction("Message");
         }
 
         public ActionResult Get_Msg()
@@ -179,13 +214,14 @@ namespace MRDB.Controllers
             return View();
         }
 
-        #region Without_Post
         public ActionResult Menu()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
 
             return View();
         }
+        
+
         #endregion
     }
 }

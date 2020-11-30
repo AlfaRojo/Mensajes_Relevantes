@@ -8,6 +8,7 @@ namespace Mensajes_Relevantes.Models
 {
     public class History
     {
+        [BsonId]
         public Object id_History { get; set; }
 
         [BsonElement("emisor")]
