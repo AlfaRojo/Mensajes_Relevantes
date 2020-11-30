@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Mensajes_Relevantes.Models.Contact>
+
+@{
+    ViewData["Title"] = "ToSend";
+}
+
+<p>Conecting: @ViewBag.sessionv</p>
+<h1>Send Message To...</h1>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nick_Name)
+            </th>
+        </tr>
+    </thead>
+    @if (Model.Count() > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nick_Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Send", "ToSend", item)
+                </td>
+            </tr>
+        }
+    }
+    @if (Model.Count() == 0)
+    {
+        <a href="/User/Contact">Add Friends</a>
+    }
+</table>

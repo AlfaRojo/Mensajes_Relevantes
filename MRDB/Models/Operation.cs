@@ -79,10 +79,10 @@ namespace MRDB.Models
         public int Get_DH_Group(string emisor, string receptor)
         {
             MongoHelper.ConnectToMongoService();
-            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;
+            return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;//Solo obtiene el primer amigo
         }
 
-        public List<Message> Get_Individual(string msg, string current_user)
+        public List<Message> Get_Messages(string msg, string current_user)
         {
             List<Message> messages = new List<Message>();
             MongoHelper.ConnectToMongoService();
@@ -116,6 +116,14 @@ namespace MRDB.Models
             EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
             var cypher = encryptDecrypt.Encrypt(msg, Convert.ToString(DH, 2));
             return cypher;
+        }
+
+        public List<Contact> Get_Friends(string current_user)
+        {
+            MongoHelper.ConnectToMongoService();
+            var friends = MongoHelper.Database.GetCollection<User>("User").Find(d => d.Nick_Name == current_user).FirstOrDefault();
+
+            return friends.Friends;
         }
     }
 }

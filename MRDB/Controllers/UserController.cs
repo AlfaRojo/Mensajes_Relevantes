@@ -17,6 +17,7 @@ namespace MRDB.Controllers
         {
             this.chatHub = hubContext;
         }
+
         public ActionResult Message()
         {
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
@@ -25,7 +26,7 @@ namespace MRDB.Controllers
         [HttpPost]
         public async Task<ActionResult> Message(Message message, IFormFile file)
         {
-            ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name"); 
+            ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name");
             Operation operation = new Operation();
             var user_Info = operation.Get_User_Info(message.emisor);
             if (user_Info.Friends.Count().Equals(0))
@@ -60,13 +61,10 @@ namespace MRDB.Controllers
             return View();
         }
 
-        // GET: UserController/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: UserController/Create
         [HttpPost]
         public ActionResult Create(IFormCollection collection)
         {
@@ -82,7 +80,6 @@ namespace MRDB.Controllers
             }
         }
 
-        // GET: UserController
         public ActionResult LoginAsync()
         {
             return View();
@@ -100,7 +97,7 @@ namespace MRDB.Controllers
                     return View();
                 }
                 var pass = Convert.ToString(user.DH, 2);
-                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], pass ));
+                var result = Operation.SearchUser(collection["Nick_Name"], encryptDecrypt.Encrypt(collection["password"], pass));
                 if (result)
                 {
                     Connection connection = new Connection();
@@ -116,18 +113,11 @@ namespace MRDB.Controllers
             }
 
         }
-        public ActionResult Menu()
-        {
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-
-            return View();
-        }
 
         [HttpGet]
         public ActionResult Contact(User user)
         {
             UserInformation userInformation = new UserInformation();
-
             string current_User = HttpContext.Session.GetString("Nick_Name");
             ViewBag.sessionv = current_User;
             if (user.Nick_Name != null && user.Name != null)
@@ -156,14 +146,42 @@ namespace MRDB.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public ActionResult Get_Msg(string message)
         {
             Operation operation = new Operation();
             string current_User = HttpContext.Session.GetString("Nick_Name");
-            var all_msg = operation.Get_Individual(message, current_User);
+            var all_msg = operation.Get_Messages(message, current_User);
             return View(all_msg);
         }
+
+        [HttpGet]
+        public ActionResult ToSend(string emisor)
+        {
+            string current_user = HttpContext.Session.GetString("Nick_Name");
+            if (current_user != null)
+            {
+                Operation operation = new Operation();
+                var friends = operation.Get_Friends(current_user);
+                return View(friends);
+            }
+            return RedirectToAction("LoginAsync", "User");
+        }
+
+        [HttpPost]
+        public ActionResult ToSend()
+        {
+
+            return View();
+        }
+
+        #region Without_Post
+        public ActionResult Menu()
+        {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+
+            return View();
+        }
+        #endregion
     }
 }
