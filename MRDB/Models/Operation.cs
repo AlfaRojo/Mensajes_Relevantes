@@ -59,12 +59,10 @@ namespace MRDB.Models
 
         public void Insert_Chat(string text, string date, string emisor, byte[] file_Cont, string fileName)
         {
-            var new_id = Guid.NewGuid().ToString();
             MongoHelper.ConnectToMongoService();
             MongoHelper.Message_Collection = MongoHelper.Database.GetCollection<Message>("Chat");
             MongoHelper.Message_Collection.InsertOneAsync(new Message
             {
-                Id_Message = new_id,
                 Text = text,
                 SendDate = date,
                 emisor = emisor,
@@ -85,16 +83,21 @@ namespace MRDB.Models
             return MongoHelper.Database.GetCollection<User>("User").Find(d => d.Name == emisor).FirstOrDefault().Friends[0].DH_Key;
         }
 
-        public Message Get_Individual(string msg)
+        public Message Get_Individual(string msg, string current_user)
         {
+            Message message = new Message();
             MongoHelper.ConnectToMongoService();
-            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == msg).FirstOrDefault();
-            Message message = new Message
+            var res = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.emisor == current_user).FirstOrDefault();
+            if (res != null)
             {
-                Text = res.Text,
-                emisor = res.emisor,
-                receptor = res.receptor
-            };
+                message = new Message
+                {
+                    Text = res.Text,
+                    emisor = res.emisor,
+                    receptor = res.receptor
+                };
+                return message;
+            }
             return message;
         }
     }

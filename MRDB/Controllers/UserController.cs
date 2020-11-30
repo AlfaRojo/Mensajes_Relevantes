@@ -134,7 +134,6 @@ namespace MRDB.Controllers
             {
                 Contact contact = new Contact
                 {
-                    id_Contact = Guid.NewGuid().ToString(),
                     Nick_Name = user.Nick_Name
                 };
                 userInformation.Add_Contact(contact, current_User);
@@ -162,7 +161,9 @@ namespace MRDB.Controllers
         public ActionResult Get_Msg(string message)
         {
             Operation operation = new Operation();
-            return View(operation.Get_Individual(message));
+            string current_User = HttpContext.Session.GetString("Nick_Name");
+            var all_msg = operation.Get_Individual(message, current_User);
+            return View(all_msg);
         }
     }
 }
