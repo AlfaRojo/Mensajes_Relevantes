@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Mensajes_Relevantes.Models.Message>
+
+@{
+    ViewData["Title"] = "Get_Msg";
+}
+<p>Conecting: @ViewBag.sessionv</p>
+<h1>Mensajes</h1>
+
+@using (Html.BeginForm("Get_Msg", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="text" name="message" />
+    <input type="submit" value="Search" class="btn btn-primary" />
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SendDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.emisor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.receptor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SendDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.emisor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.receptor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<a href="/User/Menu">Menu</a>

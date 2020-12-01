@@ -115,7 +115,17 @@ namespace MRDB.Controllers
         }
 
         #endregion
-       
+
+        #region Menu
+        public ActionResult Menu()
+        {
+            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+
+            return View();
+        }
+
+        #endregion
+
         //Corregir
         #region Message
 
@@ -165,7 +175,7 @@ namespace MRDB.Controllers
                 Import import = new Import();
                 file_Cont = await import.Upload_FileAsync(file);
                 operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor , file_Cont, file.FileName);
-                information.SetHistoryCollection(message.emisor, message.receptor, message);
+                information.SetHistoryCollection(message.emisor, message.receptor, message, text);
             }
             if (message.Text != null)
             {
@@ -173,7 +183,7 @@ namespace MRDB.Controllers
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
                 operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor, file_Cont, "");
-                information.SetHistoryCollection(message.emisor, message.receptor, message);
+                information.SetHistoryCollection(message.emisor, message.receptor, message, text);
 
             }
             await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
@@ -190,7 +200,9 @@ namespace MRDB.Controllers
         {
             Operation operation = new Operation();
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            var all_msg = operation.Get_Messages(message, ViewBag.sessionv);
+            var Information = new UserInformation();
+            var all_msg = Information.GetHistoryCollection(ViewBag.sessionv, message);
+           
             return View(all_msg);
         }
 
@@ -218,13 +230,20 @@ namespace MRDB.Controllers
             return View();
         }
 
-        public ActionResult Menu()
+        [HttpGet]
+        public ActionResult Get_History()
         {
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-
             return View();
         }
-        
+
+        [HttpPost]
+        public ActionResult Get_History(string receptor)
+        {
+            var Information = new UserInformation();
+            var emisor = HttpContext.Session.GetString("Nick_Name");
+            var List = Information.GetHistoryCollection(emisor, receptor);
+            return View(List);
+        }
 
         #endregion
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using MongoDB.Driver;
 using DiffieHelman;
 using System;
+using SDES;
 
 namespace MRDB.Models
 {
@@ -115,7 +116,7 @@ namespace MRDB.Models
         }
 
         //Modficado
-        public void SetHistoryCollection(string emisor, string receptor, Message message)
+        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text)
         {
             MongoHelper.ConnectToMongoService();
             MongoHelper.History_Collection = MongoHelper.Database.GetCollection<History>("History");
@@ -128,14 +129,36 @@ namespace MRDB.Models
                           where history.Emisor == receptor && history.Receptor == emisor
                           select history;
 
+            var message1 = new Message()
+            {
+                Id_Message = message.Id_Message,
+                SendDate = message.SendDate,
+                Text = _Text,
+                file_Name = message.file_Name,
+                file_Content = message.file_Content,
+                emisor = message.emisor,
+                receptor = message.receptor,
+                Action = "Send"
+            };
+            var message2 = new Message()
+            {
+                Id_Message = message.Id_Message,
+                SendDate = message.SendDate,
+                Text = _Text,
+                file_Name = message.file_Name,
+                file_Content = message.file_Content,
+                emisor = message.emisor,
+                receptor = message.receptor,
+                Action = "Recieved"
+            };
+
             if (!SearchC1.Any())
             {
-
                 var History = new History();
                 History.id_History = new string($"{emisor}{receptor}");
                 History.Emisor = emisor;
                 History.Receptor = receptor;
-                History.Sent.Add(message);
+                History.Chat.Add(message1);
                 MongoHelper.History_Collection.InsertOneAsync(History);
                 if (!SearhC2.Any())
                 {
@@ -143,7 +166,7 @@ namespace MRDB.Models
                     History2.id_History = new string($"{receptor}{emisor}");
                     History2.Emisor = receptor;
                     History2.Receptor = emisor;
-                    History2.Received.Add(message);
+                    History2.Chat.Add(message2);
                     MongoHelper.History_Collection.InsertOneAsync(History2);
                 }
             }
@@ -152,15 +175,47 @@ namespace MRDB.Models
                 GetAllHistory();
                 var UserConversation1 = _History.Find(x => x.Emisor == emisor && x.Receptor == receptor);
                 var UserConversation2 = _History.Find(x => x.Emisor == receptor && x.Receptor == emisor);
-                UserConversation1.Sent.Add(message);
+                UserConversation1.Chat.Add(message1);
                 MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == emisor && x.Receptor == receptor, UserConversation1);
-                UserConversation2.Received.Add(message);
+                UserConversation2.Chat.Add(message2);
                 MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == receptor && x.Receptor == emisor, UserConversation2);
 
             }
 
         }
 
+        //Modificado
+        public List<Message> GetHistoryCollection(string emisor, string receptor)
+        {
+            var _ListChatCipher = new List<Message>();
+            var _ListChatDesCipher = new List<Message>();
+            var _History = new List<History>();
+            MongoHelper.ConnectToMongoService();
+            MongoHelper.History_Collection = MongoHelper.Database.GetCollection<History>("History");
+            var Conversation1 = MongoHelper.History_Collection.AsQueryable<History>();
+            var UserHisory = from history in Conversation1
+                           where history.Emisor == emisor && history.Receptor == receptor
+                           select history;
+
+            //Decifrar el mensaje
+            _History = UserHisory.ToList();
+            Operation operation = new Operation();
+            var DH_Group = operation.Get_DH_Group(emisor, receptor);
+            EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+
+            foreach (var item in _History)
+            {
+                _ListChatCipher = item.Chat;
+            }
+
+            foreach(var item in _ListChatCipher)
+            {
+                var TextDesCipher = encryptDecrypt.Decrypt(item.Text, Convert.ToString(DH_Group, 2));
+                item.Text = TextDesCipher;
+                _ListChatDesCipher.Add(item);
+            }
+            return _ListChatDesCipher;
+        }
         //Modificado
         public UserInformation()
         {
