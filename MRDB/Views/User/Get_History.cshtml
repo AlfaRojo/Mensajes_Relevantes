@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Mensajes_Relevantes.Models.Message>
 
 @{
-    ViewData["Title"] = "Get_Msg";
+    ViewData["Title"] = "Get_History";
 }
 <p>Conecting: @ViewBag.sessionv</p>
-<h1>Mensajes</h1>
+<h1>Historial</h1>
 
-@using (Html.BeginForm("Get_Msg", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Get_History", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="text" name="message" />
+    <input type="text" name="receptor" />
     <input type="submit" value="Search" class="btn btn-primary" />
 }
 

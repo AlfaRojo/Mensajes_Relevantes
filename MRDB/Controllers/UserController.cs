@@ -199,10 +199,8 @@ namespace MRDB.Controllers
         public ActionResult Get_Msg(string message)
         {
             Operation operation = new Operation();
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            var Information = new UserInformation();
-            var all_msg = Information.GetHistoryCollection(ViewBag.sessionv, message);
-           
+            string current_user = ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            var all_msg = operation.Get_Messages(message, current_user);
             return View(all_msg);
         }
 
