@@ -14,6 +14,7 @@ namespace SDES
             }
             S_DES s_DES = new S_DES(_key);
             string password = string.Empty;
+            var byteText = Encoding.ASCII.GetBytes(plainText);
             using (BinaryReader br = new BinaryReader(new MemoryStream(Encoding.ASCII.GetBytes(plainText))))
             {
                 int blocksize = 4 * 1024;
@@ -42,10 +43,12 @@ namespace SDES
                     {
                         output[i] = s_DES.Encrypt(input[i]);
                     }
-                    foreach (var item in output)
-                    {
-                        password += Convert.ToChar(item);
-                    }
+                    password = Encoding.Default.GetString(output);
+                    //password = string.Empty;
+                    //foreach (var item in output)
+                    //{
+                    //    password += Convert.ToChar(item);
+                    //}
                 } 
             }
             return password;
@@ -59,6 +62,7 @@ namespace SDES
             }
             string password = string.Empty;
             S_DES s_DES = new S_DES(_key);
+            var byteText = Encoding.ASCII.GetBytes(plainText);
             using (BinaryReader br = new BinaryReader(new MemoryStream(Encoding.ASCII.GetBytes(plainText))))
             {
                 int blocksize = 4 * 1024;
@@ -87,11 +91,12 @@ namespace SDES
                     {
                         output[i] = s_DES.Decrypt(input[i]);
                     }
-
-                    foreach (var item in output)
-                    {
-                        password += Convert.ToChar(item);
-                    }
+                    password = Encoding.Default.GetString(output);
+                    //password = string.Empty;
+                    //foreach (var item in output)
+                    //{
+                    //    password += Convert.ToChar(item);
+                    //}
                 }
             }
             return password;
