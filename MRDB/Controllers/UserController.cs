@@ -229,18 +229,13 @@ namespace MRDB.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get_History()
+        public ActionResult Get_History(User receptor)
         {
+            ViewBag.receptor = receptor.Nick_Name;
             ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Get_History(string receptor)
-        {
             var Information = new UserInformation();
             var emisor = ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            var List = Information.GetHistoryCollection(emisor, receptor);
+            var List = Information.GetHistoryCollection(emisor, receptor.Nick_Name);
             return View(List);
         }
 

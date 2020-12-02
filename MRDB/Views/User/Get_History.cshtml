@@ -6,16 +6,7 @@
 <p>Conecting: @ViewBag.sessionv</p>
 
 <h1>Historial</h1>
-<p></p>
-@using (Html.BeginForm("Get_History", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <p></p>
-    <label>Write the name of your friend</label>
-    <input type="text" name="receptor" />
-    <input type="submit" value="Search" class="btn btn-primary" />
-}
-<p></p>
-<a style="text-align:left;" href="/User/Menu">Go To Menu</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -76,7 +67,7 @@
 
             }
         }
+        <a style="text-align:left;" href="/User/Menu">Go To Menu</a>
     </tbody>
 </table>
 <footer></footer>
-
