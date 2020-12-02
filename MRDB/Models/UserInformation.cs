@@ -200,7 +200,7 @@ namespace MRDB.Models
             //Decifrar el mensaje
             _History = UserHisory.ToList();
             Operation operation = new Operation();
-            var DH_Group = operation.Get_DH_Group(emisor, receptor);
+            var DH_Group = 0;
             EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
 
             foreach (var item in _History)
@@ -210,6 +210,9 @@ namespace MRDB.Models
 
             foreach(var item in _ListChatCipher)
             {
+                if(item.Action == "Recieved") { DH_Group = operation.Get_DH_Group(receptor, emisor); }
+                else if(item.Action == "Send") { DH_Group = operation.Get_DH_Group(emisor, receptor); }
+
                 var TextDesCipher = encryptDecrypt.Decrypt(item.Text, Convert.ToString(DH_Group, 2));
                 item.Text = TextDesCipher;
                 _ListChatDesCipher.Add(item);
