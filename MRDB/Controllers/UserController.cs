@@ -186,7 +186,7 @@ namespace MRDB.Controllers
                 information.SetHistoryCollection(message.emisor, message.receptor, message, text);
 
             }
-            await chatHub.Clients.All.SendAsync(message.emisor, message.Text);
+            await chatHub.Clients.All.SendAsync("ReceiveMessage", message.emisor, message.Text);
 
             return RedirectToAction("Message");
         }
