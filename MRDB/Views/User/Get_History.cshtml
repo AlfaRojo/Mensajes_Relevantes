@@ -4,14 +4,18 @@
     ViewData["Title"] = "Get_History";
 }
 <p>Conecting: @ViewBag.sessionv</p>
-<h1>Historial</h1>
 
+<h1>Historial</h1>
+<p></p>
 @using (Html.BeginForm("Get_History", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    <p></p>
+    <label>Write the name of your friend</label>
     <input type="text" name="receptor" />
     <input type="submit" value="Search" class="btn btn-primary" />
 }
-
+<p></p>
+<a style="text-align:left;" href="/User/Menu">Go To Menu</a>
 <table class="table">
     <thead>
         <tr>
@@ -35,22 +39,44 @@
         {
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SendDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.emisor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.receptor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Text)
-                    </td>
-                </tr>
+                if (item.Action == "Recieved")
+                {
+                    <tr class="d0" style="background-color:#8C4966; color:white;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SendDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.emisor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.receptor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Text)
+                        </td>
+                    </tr>
+                }
+                else if (item.Action == "Send")
+                {
+                    <tr class="d1" style="background-color:#BBA9BB; color:black;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SendDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.emisor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.receptor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Text)
+                        </td>
+                    </tr>
+                }
+
             }
         }
     </tbody>
 </table>
-<a href="/User/Menu">Menu</a>
+<footer></footer>
+
