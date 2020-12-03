@@ -160,34 +160,29 @@ namespace MRDB.Controllers
             {
                 return View();
             }
-            byte[] file_Cont = { };
-            string text = message.Text;
-            if (text == null && file_Cont != null)
+            if (message.Text == null && file != null)
             {
                 ViewBag.sessionv = message.emisor;
                 return View();
             }
             var date = DateTime.Today;
             message.SendDate = date.ToShortDateString();
-            message.emisor = HttpContext.Session.GetString("Nick_Name");
+            message.file_Name = "";
             if (file != null)
             {
                 Import import = new Import();
-                file_Cont = await import.Upload_FileAsync(file);
-                operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor , file_Cont, file.FileName);
-                information.SetHistoryCollection(emisor: message.emisor, receptor: message.receptor, message: message, file_Cont :file_Cont, fileName: file.FileName);
+                message.file_Content = await import.Upload_FileAsync(file);
+                message.file_Name = file.FileName;
             }
             if (message.Text != null)
             {
 
                 var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-                text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
-                operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor, file_Cont, "");
-                information.SetHistoryCollection(message.emisor, message.receptor, message, text);
-
+                message.Text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
             }
-            await _chatHubContext.Clients.All.SendAsync("ReceiveMessage", message.emisor, message.Text);
+            operation.Insert_Chat(message.Text, message.SendDate, message.emisor, message.receptor, message.file_Content, message.file_Name);
+            information.SetHistoryCollection(message);
 
             return RedirectToAction("Get_History", "User", message);
         }

@@ -39,26 +39,6 @@ namespace MRDB.Models
             return _History;
         }
 
-        public void SetContactCollection()
-        {
-            MongoHelper.ConnectToMongoService();
-            var UserCollection = MongoHelper.Database.GetCollection<User>("User");
-            MongoHelper.Contact_Collection = MongoHelper.Database.GetCollection<Contact>("Contact");
-            _User = UserCollection.Find(d => true).ToList();
-            foreach (var item in _User)
-            {
-                var Search = MongoHelper.Contact_Collection.Find(x => x.Nick_Name == (string)item.Nick_Name).Any();
-                if (!Search)
-                {
-                    MongoHelper.Contact_Collection.InsertOneAsync(new Contact
-                    {
-                        Nick_Name = (string)item.Nick_Name
-                    });
-
-                }
-            }
-        }
-
         //Modificado
         public void Add_Contact(Contact new_Contact, string ActualUser)
         {
@@ -116,26 +96,26 @@ namespace MRDB.Models
         }
 
         //Modficado
-        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text = null, byte[] file_Cont = null, string fileName = null)
+        public void SetHistoryCollection(Message message)
         {
             MongoHelper.ConnectToMongoService();
             MongoHelper.History_Collection = MongoHelper.Database.GetCollection<History>("History");
             var Conversation1 = MongoHelper.History_Collection.AsQueryable<History>();
             var SearchC1 = from history in Conversation1
-                           where history.Emisor == emisor && history.Receptor == receptor
+                           where history.Emisor == message.emisor && history.Receptor == message.receptor
                            select history;
 
             var SearhC2 = from history in Conversation1
-                          where history.Emisor == receptor && history.Receptor == emisor
+                          where history.Emisor == message.receptor && history.Receptor == message.emisor
                           select history;
 
             var message1 = new Message()
             {
                 Id_Message = message.Id_Message,
                 SendDate = message.SendDate,
-                Text = _Text,
-                file_Name = fileName,
-                file_Content = file_Cont,
+                Text = message.Text,
+                file_Name = message.file_Name,
+                file_Content = message.file_Content,
                 emisor = message.emisor,
                 receptor = message.receptor,
                 Action = "Send"
@@ -144,9 +124,9 @@ namespace MRDB.Models
             {
                 Id_Message = message.Id_Message,
                 SendDate = message.SendDate,
-                Text = _Text,
-                file_Name = fileName,
-                file_Content = file_Cont,
+                Text = message.Text,
+                file_Name = message.file_Name,
+                file_Content = message.file_Content,
                 emisor = message.emisor,
                 receptor = message.receptor,
                 Action = "Recieved"
@@ -155,17 +135,17 @@ namespace MRDB.Models
             if (!SearchC1.Any())
             {
                 var History = new History();
-                History.id_History = new string($"{emisor}{receptor}");
-                History.Emisor = emisor;
-                History.Receptor = receptor;
+                History.id_History = new string($"{message.emisor}{message.receptor}");
+                History.Emisor = message.emisor;
+                History.Receptor = message.receptor;
                 History.Chat.Add(message1);
                 MongoHelper.History_Collection.InsertOneAsync(History);
                 if (!SearhC2.Any())
                 {
                     var History2 = new History();
-                    History2.id_History = new string($"{receptor}{emisor}");
-                    History2.Emisor = receptor;
-                    History2.Receptor = emisor;
+                    History2.id_History = new string($"{message.receptor}{message.emisor}");
+                    History2.Emisor = message.receptor;
+                    History2.Receptor = message.emisor;
                     History2.Chat.Add(message2);
                     MongoHelper.History_Collection.InsertOneAsync(History2);
                 }
@@ -173,12 +153,12 @@ namespace MRDB.Models
             else
             {
                 GetAllHistory();
-                var UserConversation1 = _History.Find(x => x.Emisor == emisor && x.Receptor == receptor);
-                var UserConversation2 = _History.Find(x => x.Emisor == receptor && x.Receptor == emisor);
+                var UserConversation1 = _History.Find(x => x.Emisor == message.emisor && x.Receptor == message.receptor);
+                var UserConversation2 = _History.Find(x => x.Emisor == message.receptor && x.Receptor == message.emisor);
                 UserConversation1.Chat.Add(message1);
-                MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == emisor && x.Receptor == receptor, UserConversation1);
+                MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == message.emisor && x.Receptor == message.receptor, UserConversation1);
                 UserConversation2.Chat.Add(message2);
-                MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == receptor && x.Receptor == emisor, UserConversation2);
+                MongoHelper.History_Collection.FindOneAndReplace(x => x.Emisor == message.receptor && x.Receptor == message.emisor, UserConversation2);
 
             }
 

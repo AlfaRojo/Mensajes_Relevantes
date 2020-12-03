@@ -84,9 +84,17 @@ namespace MRDB.Models
             var UserCollection = MongoHelper.Database.GetCollection<User>("User");
             var User = UserCollection.Find(x => (string)x.Nick_Name == emisor).ToList();//Solo obtiene el primer amigo
             var Dh_Value = 0;
-            foreach (var item in User)
+            int myFriend = 0;
+            if (User.ElementAt(0) != null)
             {
-                Dh_Value = item.DH;
+                myFriend = User.ElementAt(0).Friends.Count;
+                for (int i = 0; i < myFriend; i++)
+                {
+                    if (User.ElementAt(0).Friends.ElementAt(i).Nick_Name == receptor)
+                    {
+                        Dh_Value = User.ElementAt(0).Friends.ElementAt(i).DH_Key;
+                    }
+                }
             }
             return Dh_Value;
         }
@@ -102,16 +110,17 @@ namespace MRDB.Models
                 for (int i = 0; i < cant_Friend; i++)
                 {
                     var cypher_msg = get_Cypher_Message(user_Info.Friends[i].DH_Key, msg);
-                    var message_Cyper = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == cypher_msg).FirstOrDefault();
-                    if (message_Cyper != null)
+                    var message_Cyper = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == cypher_msg).ToListAsync().Result;
+                    if (message_Cyper.Count() > 0)
                     {
                         EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                         var decrypted = encryptDecrypt.Decrypt(cypher_msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
-                        Message message = new Message { 
+                        Message message = new Message
+                        {
                             Text = decrypted,
-                            emisor = message_Cyper.emisor,
-                            receptor = message_Cyper.receptor,
-                            SendDate = message_Cyper.SendDate
+                            emisor = message_Cyper.ElementAt(0).emisor,
+                            receptor = message_Cyper.ElementAt(0).receptor,
+                            SendDate = message_Cyper.ElementAt(0).SendDate
                         };
                         messages.Add(message);
                     }
