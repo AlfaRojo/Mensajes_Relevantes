@@ -39,5 +39,26 @@ namespace MRDB.Models
             return all_File;
         }
 
+        //Prueba
+        public string Import_BytesAsync(string _FileName, byte[] fileConten)
+        {
+            var new_Path = string.Empty;
+            var fileHandelig = new FileHandeling();
+            fileHandelig.Create_File_Import();
+            var path = Path.Combine($"Upload", _FileName);
+            new_Path = $"{path}.lzw";
+            save_File(new_Path, fileConten);
+            return new_Path;
+        }
+        private void save_File(string new_Path, byte[] txtResultado)
+        {
+            using (var writeStream = new FileStream(new_Path, FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(writeStream))
+                {
+                    writer.Write(txtResultado);
+                }
+            }
+        }
     }
 }

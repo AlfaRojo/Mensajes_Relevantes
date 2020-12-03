@@ -10,8 +10,9 @@ namespace Laboratorio_3_EDII.Manager
 {
     public class CompressLZW 
     {
-        public void Decompress_File(FileStream importFile)
+        public string Decompress_File(FileStream importFile, string _fileName)
         {
+            var path = string.Empty;
             using (var reader = new BinaryReader(importFile))
             {
                 var diccionaryCaracter = Convert.ToChar(reader.ReadByte());
@@ -95,9 +96,9 @@ namespace Laboratorio_3_EDII.Manager
                 compressList.RemoveAt(0);
                 var Decompressed = new System.Text.StringBuilder(first);
                 importFile.Close();
-                FileHandeling fileHandeling = new FileHandeling();
-                var fileName = fileHandeling.Get_Name("LZW", importFile.Name);
-                using (FileStream newFile = new FileStream($"Decompress/" + fileName, FileMode.OpenOrCreate))
+                
+
+                using (FileStream newFile = new FileStream($"Decompress/" + _fileName + ".txt", FileMode.OpenOrCreate))
                 {
                     using (StreamWriter writer = new StreamWriter(newFile))
                     {
@@ -120,6 +121,8 @@ namespace Laboratorio_3_EDII.Manager
                     }
                 }
             }
+            path = $"Decompress/" + _fileName + ".txt";
+            return path;
         }
         public void Compress_File(FileStream ArchivoImportado, string nameFile = null)
         {

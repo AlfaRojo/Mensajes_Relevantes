@@ -1,9 +1,11 @@
 ﻿using EDII_PROYECTO.Huffman;
 using Laboratorio_3_EDII.Manager;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Laboratorio_3_EDII.Models
 {
@@ -60,14 +62,16 @@ namespace Laboratorio_3_EDII.Models
         /// </summary>
         /// <param name="new_Path"></param>
         /// <param name="name"></param>
-        public void Decompress_LZW(string new_Path)
+        public string Decompress_LZW(string new_Path, string fileName)
         {
+            var path = string.Empty;
             using (var new_File = new FileStream(new_Path, FileMode.Open))
             {
                 CompressLZW compressLZW = new CompressLZW();
-                compressLZW.Decompress_File(new_File);
+                path = compressLZW.Decompress_File(new_File, fileName);
             }
             Delete_Files_Upload();
+            return path;
         }
         private void Delete_Files_Upload()
         {
@@ -145,5 +149,6 @@ namespace Laboratorio_3_EDII.Models
                 }
             }
         }
+
     }
 }

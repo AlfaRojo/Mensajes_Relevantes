@@ -116,7 +116,7 @@ namespace MRDB.Models
         }
 
         //Modficado
-        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text)
+        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text, byte[] file_Cont = null, string fileName = null)
         {
             MongoHelper.ConnectToMongoService();
             MongoHelper.History_Collection = MongoHelper.Database.GetCollection<History>("History");
@@ -134,8 +134,8 @@ namespace MRDB.Models
                 Id_Message = message.Id_Message,
                 SendDate = message.SendDate,
                 Text = _Text,
-                file_Name = message.file_Name,
-                file_Content = message.file_Content,
+                file_Name = fileName,
+                file_Content = file_Cont,
                 emisor = message.emisor,
                 receptor = message.receptor,
                 Action = "Send"
@@ -145,8 +145,8 @@ namespace MRDB.Models
                 Id_Message = message.Id_Message,
                 SendDate = message.SendDate,
                 Text = _Text,
-                file_Name = message.file_Name,
-                file_Content = message.file_Content,
+                file_Name = fileName,
+                file_Content = file_Cont,
                 emisor = message.emisor,
                 receptor = message.receptor,
                 Action = "Recieved"

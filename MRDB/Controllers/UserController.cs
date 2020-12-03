@@ -175,10 +175,11 @@ namespace MRDB.Controllers
                 Import import = new Import();
                 file_Cont = await import.Upload_FileAsync(file);
                 operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor , file_Cont, file.FileName);
-                information.SetHistoryCollection(message.emisor, message.receptor, message, text);
+                information.SetHistoryCollection(message.emisor, message.receptor, message, text, file_Cont, file.FileName);
             }
             if (message.Text != null)
             {
+
                 var DH_Group = operation.Get_DH_Group(message.emisor, message.receptor);
                 EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                 text = encryptDecrypt.Encrypt(message.Text, Convert.ToString(DH_Group, 2));
