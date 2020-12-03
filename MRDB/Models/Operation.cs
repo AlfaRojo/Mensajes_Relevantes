@@ -110,19 +110,47 @@ namespace MRDB.Models
                 for (int i = 0; i < cant_Friend; i++)
                 {
                     var cypher_msg = get_Cypher_Message(user_Info.Friends[i].DH_Key, msg);
-                    var message_Cyper = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.Text == cypher_msg).ToListAsync().Result;
-                    if (message_Cyper.Count() > 0)
+                    var message_Cyper_Emis = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.emisor == current_user).ToListAsync();
+                    if (message_Cyper_Emis.Result != null)
                     {
-                        EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
-                        var decrypted = encryptDecrypt.Decrypt(cypher_msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
-                        Message message = new Message
+                        int count_msg = message_Cyper_Emis.Result.Count();
+                        for (int j = 0; j < count_msg; j++)
                         {
-                            Text = decrypted,
-                            emisor = message_Cyper.ElementAt(0).emisor,
-                            receptor = message_Cyper.ElementAt(0).receptor,
-                            SendDate = message_Cyper.ElementAt(0).SendDate
-                        };
-                        messages.Add(message);
+                            if (message_Cyper_Emis.Result[j].Text == cypher_msg)
+                            {
+                                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+                                var decrypted = encryptDecrypt.Decrypt(cypher_msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
+                                Message message = new Message
+                                {
+                                    Text = decrypted,
+                                    emisor = message_Cyper_Emis.Result[j].emisor,
+                                    receptor = message_Cyper_Emis.Result[j].receptor,
+                                    SendDate = message_Cyper_Emis.Result[j].SendDate
+                                };
+                                messages.Add(message);
+                            }
+                        }
+                    }
+                    var message_Cyper_Recept = MongoHelper.Database.GetCollection<Message>("Chat").Find(d => d.receptor == current_user).ToListAsync();
+                    if (message_Cyper_Recept.Result != null)
+                    {
+                        int count_msg = message_Cyper_Recept.Result.Count();
+                        for (int j = 0; j < count_msg; j++)
+                        {
+                            if (message_Cyper_Recept.Result[j].Text == cypher_msg)
+                            {
+                                EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
+                                var decrypted = encryptDecrypt.Decrypt(cypher_msg, Convert.ToString(user_Info.Friends[i].DH_Key, 2));
+                                Message message = new Message
+                                {
+                                    Text = decrypted,
+                                    emisor = message_Cyper_Recept.Result[j].emisor,
+                                    receptor = message_Cyper_Recept.Result[j].receptor,
+                                    SendDate = message_Cyper_Recept.Result[j].SendDate
+                                };
+                                messages.Add(message);
+                            }
+                        }
                     }
                 }
                 return messages;
