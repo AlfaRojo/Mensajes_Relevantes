@@ -45,6 +45,24 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Text)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.file_Name)
+                        </td>
+
+                       @if(item.file_Name != null)
+                         {
+                            <td>
+                                <u>
+                                    @Html.ActionLink("Download", "FileDownload", "File", item)
+                                </u>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+
+                            </td>
+                        }
                     </tr>
                 }
                 else if (item.Action == "Send")
@@ -62,6 +80,23 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Text)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.file_Name)
+                        </td>
+                        @if(item.file_Name != null)
+                         {
+                            <td>
+                                <u>
+                                    @Html.ActionLink("Download", "FileDownload", "File", item)
+                                </u>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+
+                            </td>
+                        }
                     </tr>
                 }
 

@@ -116,7 +116,7 @@ namespace MRDB.Models
         }
 
         //Modficado
-        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text, byte[] file_Cont = null, string fileName = null)
+        public void SetHistoryCollection(string emisor, string receptor, Message message, string _Text = null, byte[] file_Cont = null, string fileName = null)
         {
             MongoHelper.ConnectToMongoService();
             MongoHelper.History_Collection = MongoHelper.Database.GetCollection<History>("History");
@@ -210,11 +210,14 @@ namespace MRDB.Models
 
             foreach(var item in _ListChatCipher)
             {
-                if(item.Action == "Recieved") { DH_Group = operation.Get_DH_Group(receptor, emisor); }
-                else if(item.Action == "Send") { DH_Group = operation.Get_DH_Group(emisor, receptor); }
+                if(item.Text != null)
+                {
+                    if (item.Action == "Recieved") { DH_Group = operation.Get_DH_Group(receptor, emisor); }
+                    else if (item.Action == "Send") { DH_Group = operation.Get_DH_Group(emisor, receptor); }
 
-                var TextDesCipher = encryptDecrypt.Decrypt(item.Text, Convert.ToString(DH_Group, 2));
-                item.Text = TextDesCipher;
+                    var TextDesCipher = encryptDecrypt.Decrypt(item.Text, Convert.ToString(DH_Group, 2));
+                    item.Text = TextDesCipher; 
+                }
                 _ListChatDesCipher.Add(item);
             }
             return _ListChatDesCipher;

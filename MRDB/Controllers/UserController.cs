@@ -175,7 +175,7 @@ namespace MRDB.Controllers
                 Import import = new Import();
                 file_Cont = await import.Upload_FileAsync(file);
                 operation.Insert_Chat(text, message.SendDate, message.emisor, message.receptor , file_Cont, file.FileName);
-                information.SetHistoryCollection(message.emisor, message.receptor, message, text, file_Cont, file.FileName);
+                information.SetHistoryCollection(emisor: message.emisor, receptor: message.receptor, message: message, file_Cont :file_Cont, fileName: file.FileName);
             }
             if (message.Text != null)
             {
@@ -234,7 +234,7 @@ namespace MRDB.Controllers
         {
             var Information = new UserInformation();
             var emisor = ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
-            if (other != null)
+            if (other.receptor != null)
             {
                 var history = Information.GetHistoryCollection(emisor, other.receptor);
                 return View(history);
