@@ -7,6 +7,7 @@ using SDES;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using System.Linq;
+using static MRDB.ChatHub;
 
 namespace MRDB.Controllers
 {
@@ -108,10 +109,10 @@ namespace MRDB.Controllers
 
         //Corregir
         #region Hub
-        private readonly IHubContext<ChatHub> chatHub;
+        private readonly IHubContext<ChatHub> _chatHubContext;
         public UserController(IHubContext<ChatHub> hubContext)
         {
-            this.chatHub = hubContext;
+            this._chatHubContext = hubContext;
         }
 
         #endregion
@@ -145,18 +146,17 @@ namespace MRDB.Controllers
                 message.emisor = (string)ViewBag.emisor;
                 message.receptor = (string)(ViewBag).receptor;
                 return View(message);
-            }     
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Message(Message message, IFormFile file)
         {
-            
             ViewBag.sessionv = message.emisor = HttpContext.Session.GetString("Nick_Name");
             var information = new UserInformation();
             var operation = new Operation();
             var user_Info = operation.Get_User_Info(message.emisor);
-            if (user_Info.Friends.Count().Equals(0))
+            if (user_Info.Friends.Count().Equals(0) || user_Info == null)
             {
                 return View();
             }
@@ -186,9 +186,9 @@ namespace MRDB.Controllers
                 information.SetHistoryCollection(message.emisor, message.receptor, message, text);
 
             }
-            await chatHub.Clients.All.SendAsync("ReceiveMessage", message.emisor, message.Text);
+            await _chatHubContext.Clients.All.SendAsync("ReceiveMessage", message.emisor, message.Text);
 
-            return RedirectToAction("Message");
+            return RedirectToAction("Get_History", "User", message);
         }
 
         public ActionResult Get_Msg()
@@ -229,12 +229,15 @@ namespace MRDB.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get_History(User receptor)
+        public ActionResult Get_History(User receptor, Message other)
         {
-            ViewBag.receptor = receptor.Nick_Name;
-            ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
             var Information = new UserInformation();
             var emisor = ViewBag.sessionv = HttpContext.Session.GetString("Nick_Name");
+            if (other != null)
+            {
+                var history = Information.GetHistoryCollection(emisor, other.receptor);
+                return View(history);
+            }
             var List = Information.GetHistoryCollection(emisor, receptor.Nick_Name);
             return View(List);
         }
