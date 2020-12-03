@@ -13,12 +13,11 @@ namespace MRDB.Models
     {
         public string FileAcction(string filename, byte[] fileCont)
         {
-            var pathDecompress = string.Empty;
             Import import = new Import();
             var path = import.Import_BytesAsync(filename, fileCont);
             var filehandeling = new FileHandeling();
             filehandeling.Create_File_Export();
-            pathDecompress = filehandeling.Decompress_LZW(path, filename);
+            var pathDecompress = filehandeling.Decompress_LZW(path, filename);
             return pathDecompress;
         }
 
@@ -45,11 +44,8 @@ namespace MRDB.Models
                         break;
                     }
                 }
-                
             }
             return fileCont;
         }
-
-        
     }
 }

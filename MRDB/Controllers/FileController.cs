@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MRDB.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MRDB.Controllers
 {
@@ -14,16 +9,14 @@ namespace MRDB.Controllers
         // GET: FileController
         public ActionResult FileDownload()
         {
-            var fileVirtualPath = string.Empty;
             ManagerFile managerFile = new ManagerFile();
             var fileCont = managerFile.GetFileConten("EbGu3", "Ivannita", "prueba1.txt");
             var OriginalnameFile = "prueba1.txt";
             var NewNameFile = OriginalnameFile.Substring(0, OriginalnameFile.Length - 4);
-            fileVirtualPath = $"~/{managerFile.FileAcction(NewNameFile, fileCont)}";
-            return File(fileVirtualPath, "application / force-download", Path.GetFileName(fileVirtualPath));
-            
+            var fileVirtualPath = $"{managerFile.FileAcction(NewNameFile, fileCont)}";
+            byte[] content = System.IO.File.ReadAllBytes(fileVirtualPath);
+            var name = Path.GetFileName(fileVirtualPath);
+            return File(content, System.Net.Mime.MediaTypeNames.Application.Octet, name);
         }
-
-        
     }
 }
