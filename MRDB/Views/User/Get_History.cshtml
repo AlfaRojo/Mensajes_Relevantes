@@ -49,8 +49,8 @@
                             @Html.DisplayFor(modelItem => item.file_Name)
                         </td>
 
-                       @if(item.file_Name != "")
-                         {
+                        @if (item.file_Name != "")
+                        {
                             <td>
                                 <u>
                                     @Html.ActionLink("Download", "FileDownload", "File", item)
@@ -60,7 +60,6 @@
                         else
                         {
                             <td>
-
                             </td>
                         }
                     </tr>
@@ -83,8 +82,8 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.file_Name)
                         </td>
-                        @if(item.file_Name != "")
-                         {
+                        @if (item.file_Name != "")
+                        {
                             <td>
                                 <u>
                                     @Html.ActionLink("Download", "FileDownload", "File", item)
@@ -94,7 +93,6 @@
                         else
                         {
                             <td>
-
                             </td>
                         }
                     </tr>
@@ -102,7 +100,8 @@
 
             }
         }
-        <a style="text-align:left;" href="/User/Menu">Go To Menu</a>
     </tbody>
 </table>
-<footer></footer>
+<div class="form-group">
+    <input type="button" value="Menu" onclick="location.href='@Url.Action("Menu", "User")'" class="MessageButton" />
+</div>

@@ -214,7 +214,7 @@ namespace MRDB.Controllers
                 var friends = operation.Get_Friends(ViewBag.sessionv);
                 return View(friends);
             }
-            return RedirectToAction("LoginAsync", "User");
+            return RedirectToAction("Login", "User");
         }
 
         [HttpPost]

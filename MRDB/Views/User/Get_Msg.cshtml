@@ -8,7 +8,7 @@
 
 @using (Html.BeginForm("Get_Msg", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="text" name="message" />
+    <input type="text" name="message" placeholder="Write key word"/>
     <input type="submit" value="Search" class="btn btn-primary" />
 }
 
@@ -54,4 +54,6 @@
     </tbody>
 
 </table>
-<a>href="/User/Menu">Menu</a>
+<div class="form-group">
+    <input type="button" value="Menu" onclick="location.href='@Url.Action("Menu", "User")'" class="MessageButton" />
+</div>
